@@ -6,26 +6,23 @@
 #include <vector>
 #include <sstream>
 
-
-using namespace std;
-
 class Implication
-{ 
+{
 private:
-	vector<int> * LeftHandSide;
-	vector<int> * RightHandSide;
+	std::vector<int> * LeftHandSide;
+	std::vector<int> * RightHandSide;
 public:
-	Implication(vector<int>* lhs, vector<int>* rhs);
-	string toString();
+	Implication(std::vector<int>* lhs, std::vector<int>* rhs);
+	std::string toString();
 };
 
-Implication::Implication(vector<int>* lhs, vector<int>* rhs){
+Implication::Implication(std::vector<int>* lhs, std::vector<int>* rhs){
 	LeftHandSide = lhs;
 	RightHandSide = rhs;
 }
 
-string Implication::toString(){
-	stringstream ss;
+std::string Implication::toString(){
+	std::stringstream ss;
 	for(unsigned int i = 0; i < LeftHandSide->size(); i++){
 		ss << (*LeftHandSide)[i] << " ";
 	}
@@ -36,9 +33,9 @@ string Implication::toString(){
 	return ss.str();
 }
 
-int testImplication(){
-	vector<int> * v1 = new vector<int>();
-	vector<int> * v2 = new vector<int>();
+void testImplication(){
+	std::vector<int> * v1 = new std::vector<int>();
+	std::vector<int> * v2 = new std::vector<int>();
 	v1->push_back(2);
 	v1->push_back(5);
 	v1->push_back(3);
@@ -46,7 +43,7 @@ int testImplication(){
 	v2->push_back(8);
 	v2->push_back(9);
 	Implication i1 = Implication(v1,v2);
-	cout << i1.toString();
+	std::cout << i1.toString();
 	while(true);
 };
 

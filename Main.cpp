@@ -2,14 +2,15 @@
 #include <string>
 #include <fstream>
 #include <vector>
-using namespace std;
+#include<iostream>
+#include <cstdlib>
 
-vector<vector<char> > * readTable (string fileName){
-    ifstream inFile;
-    inFile.open(fileName, ios::in);
+std::vector<std::vector<char> > * readTable (std::string fileName){
+    std::ifstream inFile;
+    inFile.open(fileName.c_str());
 
     if (! inFile) {
-        cerr << "Unable to open file " << fileName << endl;
+        std::cerr << "Unable to open file " << fileName;
     }
 
     else{
@@ -18,35 +19,40 @@ vector<vector<char> > * readTable (string fileName){
         inFile >> numRows;
         inFile >> numColumns;
 
-        vector<vector<char> > * matrix = new vector<vector<char> >(numRows,numColumns);
+		std::vector<char> row(numColumns);
+        std::vector<std::vector<char> > * matrix = new std::vector<std::vector<char> >(numRows,row);
         for(int i=0; i<numRows; i++){
             for(int j=0; j<numColumns; j++){
                 inFile >> (*matrix)[i][j];
             }
         }
 
-        inFile.close();	
+        inFile.close();
         return matrix;
     }
 
     return 0;
 };
 
-int printMatrix(vector<vector<char> > * matrix){
+int printMatrix(std::vector<std::vector<char> > * matrix){
     int numRows = matrix->size();
     int numColumns = (*matrix)[0].size();
 
     for(int i=0;i<numRows;i++)
     {
         for(int j=0;j<numColumns;j++){
-            cout << (*matrix)[i][j] << " ";
+            std::cout << (*matrix)[i][j] << " ";
         }
-        cout << "\n";
+        std::cout << "\n";
     }
     while(true);
 }
 
-int testReadFile(){
-    vector<vector<char> > * matrix = readTable("table1.txt");
+void testReadFile(){
+    std::vector<std::vector<char> > * matrix = readTable("table1.txt");
     printMatrix(matrix);
+}
+
+int main(int argc, char **argv){
+    testReadFile();
 }
