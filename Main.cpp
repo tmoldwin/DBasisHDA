@@ -4,7 +4,7 @@
 #include <vector>
 using namespace std;
 
-vector<vector<char>> * readTable (string fileName){
+vector<vector<char> > * readTable (string fileName){
     ifstream inFile;
     inFile.open(fileName, ios::in);
 
@@ -18,7 +18,7 @@ vector<vector<char>> * readTable (string fileName){
         inFile >> numRows;
         inFile >> numColumns;
 
-        vector<vector<char>> * matrix = new vector<vector<char>>(numRows,numColumns);
+        vector<vector<char> > * matrix = new vector<vector<char> >(numRows,numColumns);
         for(int i=0; i<numRows; i++){
             for(int j=0; j<numColumns; j++){
                 inFile >> (*matrix)[i][j];
@@ -32,7 +32,7 @@ vector<vector<char>> * readTable (string fileName){
     return 0;
 };
 
-int printMatrix(vector<vector<char>> * matrix){
+int printMatrix(vector<vector<char> > * matrix){
     int numRows = matrix->size();
     int numColumns = (*matrix)[0].size();
 
@@ -47,6 +47,6 @@ int printMatrix(vector<vector<char>> * matrix){
 }
 
 int testReadFile(){
-    vector<vector<char>> * matrix = readTable("table1.txt");
+    vector<vector<char> > * matrix = readTable("table1.txt");
     printMatrix(matrix);
 }
