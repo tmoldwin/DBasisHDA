@@ -4,6 +4,7 @@
 #include <vector>
 #include<iostream>
 #include <cstdlib>
+#include "Table.h"
 
 std::vector<std::vector<char> > * readTable (std::string fileName){
     std::ifstream inFile;

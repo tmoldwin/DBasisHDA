@@ -7,7 +7,10 @@
 //
 
 #include "Table.h"
-void Table::advance()
+void reduceTable()
 {
-
-}
+    get_matrix();
+    std::vector<std::vector<char> >a= matrix;
+    
+    
+};
