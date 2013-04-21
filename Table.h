@@ -15,14 +15,20 @@
 #include "Implication.h"
 #ifndef ____Table__
 #define ____Table__
+<<<<<<< HEAD
 
 class Table {
 public:
+=======
+class Table
+{
+>>>>>>> broke implication into header and main file, started testing table in main
     std::vector<std::vector<char> > matrix;
     std::vector<Implication> implications;
     std::map<int, int> reducedToOriginal;
     std::map<int, std::vector<int> > equivalentColumns;
 private:
+<<<<<<< HEAD
 
     int compareColumns(int column1, int column2)//
     {
@@ -124,6 +130,19 @@ public:
     std::vector<std::vector<char> > get_matrix() {
         return matrix;
     };
+=======
+    int compareColumns(int column1, int column2);//more 1s is considered smaller column
+    
+    void reduceTable();
+   
+public:
+    Table(std::vector<std::vector<char> > inputtable){
+        matrix=inputtable;
+       // reduceTable();
+    }
+    std::vector<std::vector<char> >  get_matrix(){reduceTable();return matrix;}
+    std::vector<Implication> FindSBasis();
+>>>>>>> broke implication into header and main file, started testing table in main
 };
 #include <iostream>
 
