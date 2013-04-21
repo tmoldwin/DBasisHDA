@@ -6,17 +6,9 @@
 #include <sstream>
 #include "Implication.h"
 
-<<<<<<< HEAD
 Implication::Implication(std::vector<int> * lhs, std::vector<int> * rhs) {
 	leftHandSide = lhs;
 	rightHandSide = rhs;
-=======
-
-
-Implication::Implication(std::vector<int>* lhs, std::vector<int>* rhs){
-	LeftHandSide = lhs;
-	RightHandSide = rhs;
->>>>>>> broke implication into header and main file, started testing table in main
 }
 
 std::string Implication::toString() {
