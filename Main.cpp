@@ -56,7 +56,14 @@ void testReadFile() {
     std::vector<std::vector<char> > * matrix = readTable("table1.txt");
     printMatrix(matrix);
 }
+void testReduceTable(){
+    std::vector<std::vector<char> >  matrix = *readTable("tablereducetest.txt");
+    Table test(matrix);
+    std::vector<std::vector<char> >  matrix3=test.get_matrix();
+    printMatrix(&matrix3);
+}
 
+<<<<<<< HEAD
 int main(int argc, char **argv) {
     std::cout << "\nTesting readFile()\n";
     testReadFile();
@@ -66,4 +73,9 @@ int main(int argc, char **argv) {
     testComplement();
     std::cout << "\nTesting Intersection\n";
     testIntersection();
+=======
+int main(int argc, char **argv){
+   // testReadFile();
+    testReduceTable();
+>>>>>>> broke implication into header and main file, started testing table in main
 }
