@@ -5,7 +5,7 @@
 //  Created by Joshua A Blumenkopf on 4/16/13.
 //
 //
-/*
+
 #include "Table.h"
 int Table::compareColumns(int column1, int column2)//more 1s is considered smaller column
 { int a=0;

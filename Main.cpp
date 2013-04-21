@@ -73,9 +73,6 @@ int main(int argc, char **argv) {
     testComplement();
     std::cout << "\nTesting Intersection\n";
     testIntersection();
-=======
-int main(int argc, char **argv){
-   // testReadFile();
     testReduceTable();
->>>>>>> broke implication into header and main file, started testing table in main
+
 }
