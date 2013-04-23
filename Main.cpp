@@ -59,7 +59,7 @@ void testReadFile() {
 }
 
 void testReduceTable(){
-    std::vector<std::vector<char> >  matrix = *readTable("tablereducetest2.txt");
+    std::vector<std::vector<char> >  matrix = *readTable("tableupdowntest.txt");
     Table test(matrix);
     std::vector<std::vector<char> >  matrix3=test.get_matrix();
     printMatrix(&matrix3);

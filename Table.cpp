@@ -47,15 +47,10 @@ void Table::reduceTable()
         for (int j = 0; j < matrix.size(); j++)//removes from closure columns with zero where column i has 1
         {
             if (matrix[j][i] == '1') {
-                std::cout<<"ok";
                 for (int k = 0; k < matrix[0].size(); k++) {
-                    if (matrix[j][k] != '1'){std::cout<<"good";closure[k] = 0;}
+                    if (matrix[j][k] != '1')closure[k] = 0;
                 }
             }
-        }
-        std::cout<<i;
-        for (int j=0; j<closure.size(); j++) {
-            std::cout<<closure[j]<<"\n";
         }
         //see if support of closure=support of column by seeing if it is not less
         bool a = false; //a false means no difference in support has been found
@@ -80,18 +75,18 @@ void Table::reduceTable()
     
     
 };
-int Table::compareColumns(int column1, int column2)// need to ensure compatibility with up down
+int Table::compareColumns(int column1, int column2)
 {
     int a = 0;
     for (int i = 0; i < matrix.size(); i++) {
-        if (matrix[i][column1] > matrix[i][column2]) {
+        if (matrix[i][column1]=='1' && matrix[i][column2]!='1') {
             if (a == 0 || a == -1)a = -1;
                 else {
                     a = -2;
                     break;
                 }
         }
-        if (matrix[i][column1] < matrix[i][column2]) {
+        if (matrix[i][column1]!='1' && matrix[i][column2]=='1') {
             if (a == 0 || a == 1)a = 1;
                 else {
                     a = -2;
@@ -101,4 +96,61 @@ int Table::compareColumns(int column1, int column2)// need to ensure compatibili
     }
 
     return a;
+};
+
+int Table::compareRows(int row1, int row2)
+{
+    int a = 0;
+    for (int i = 0; i < matrix[0].size(); i++) {
+        if (matrix[row1][i]=='1' && matrix[row2][i]!='1') {
+            if (a == 0 || a == 1)a = 1;
+            else {
+                a = -2;
+                break;
+            }
+        }
+        if (matrix[row1][i]!='1' && matrix[row2][i]=='1') {
+            if (a == 0 || a == -1)a = -1;
+            else {
+                a = -2;
+                break;
+            }
+        }
+    }
+    
+    return a;
+};
+void Table::createUpandDownArrows()
+{
+    //up arrows
+    for (int i=0; i<matrix[0].size(); i++) {
+        for (int j=0; j<matrix.size(); j++) {
+            if (matrix[j][i]!='1') {
+                for (int k=0; k<matrix.size(); k++) {
+                    if (compareRows(j,k)==-1&& matrix[k][i]!='1')  break;
+                    if(k==matrix.size()-1)matrix[j][i]='u';
+                }
+            }
+        }
+       
+    }
+    
+    //down arrows
+    for (int i=0; i<matrix.size(); i++) {
+        for (int j=0; j<matrix[0].size(); j++) {
+            if (matrix[i][j]!='1') {
+                for (int k=0; k<matrix[0].size(); k++) {
+                    if (compareColumns(j,k)==1&& matrix[i][k]!='1')  {std::cout<< i<<j<<k<<"\n";break;}
+                    if(k==matrix[0].size()-1){
+                        if (matrix[i][j]=='u')  matrix[i][j]='b';
+                         else   matrix[i][j]='d';
+                    }
+                }
+            }
+        }
+        
+    }
+
+    
+    
 };

@@ -23,14 +23,16 @@ private:
     std::map<int, int> reducedToOriginal;
     std::map<int, std::vector<int> > equivalentColumns;
     
-    int compareColumns(int column1, int column2);//more ones is smaller column; numbering starts from 0
-    
+    int compareColumns(int column1, int column2);//more ones is smaller column; column numbering starts from 0
+    int compareRows(int row1, int row2);// more ones is larger row; row numbering starts from 0
     void reduceTable();
+    void createUpandDownArrows();
 public:
     
     Table(std::vector<std::vector<char> > inputtable) {
         matrix = inputtable;
         reduceTable();
+        createUpandDownArrows();
     };
     
     std::vector<std::vector<char> > get_matrix() {
