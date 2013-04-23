@@ -13,7 +13,7 @@
 std::vector<std::vector<char> > * readTable(std::string fileName) {
     std::ifstream inFile;
     inFile.open(fileName.c_str());
-
+    
     if (!inFile) {
         std::cerr << "Unable to open file " << fileName;
     }
@@ -22,10 +22,10 @@ std::vector<std::vector<char> > * readTable(std::string fileName) {
         int numColumns;
         inFile >> numRows;
         inFile >> numColumns;
-
+        
         std::vector<char> row(numColumns);
         std::vector<std::vector<char> > * matrix =
-                new std::vector<std::vector<char> >(numRows, row);
+        new std::vector<std::vector<char> >(numRows, row);
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numColumns; j++) {
                 inFile >> (*matrix)[i][j];
@@ -34,7 +34,7 @@ std::vector<std::vector<char> > * readTable(std::string fileName) {
         inFile.close();
         return matrix;
     }
-
+    
     return 0;
 }
 ;
@@ -56,14 +56,7 @@ void testReadFile() {
     std::vector<std::vector<char> > * matrix = readTable("table1.txt");
     printMatrix(matrix);
 }
-void testReduceTable(){
-    std::vector<std::vector<char> >  matrix = *readTable("tablereducetest.txt");
-    Table test(matrix);
-    std::vector<std::vector<char> >  matrix3=test.get_matrix();
-    printMatrix(&matrix3);
-}
 
-<<<<<<< HEAD
 int main(int argc, char **argv) {
     std::cout << "\nTesting readFile()\n";
     testReadFile();
@@ -73,6 +66,4 @@ int main(int argc, char **argv) {
     testComplement();
     std::cout << "\nTesting Intersection\n";
     testIntersection();
-    testReduceTable();
-
 }

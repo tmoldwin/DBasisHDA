@@ -8,7 +8,7 @@ std::vector<int> & complement(std::vector<int> & subset, std::vector<int> & supe
     for (unsigned int i = 0; i < superset.size(); i++) {
         int j = superset[i];
         if (!(std::find(subset.begin(), subset.end(), j) != subset.end())) {
-            //Superset doesn't contain that element 
+            //Superset doesn't contain that element
             complement->push_back(j);
         }
     }
@@ -28,7 +28,7 @@ std::vector<int> & intersection(std::vector<int> & set1, std::vector<int> & set2
 
 void printVector(std::vector<int> & path) {
     for (std::vector<int>::const_iterator i = path.begin(); i != path.end(); ++i)
-    std::cout << *i << ' ';
+        std::cout << *i << ' ';
 }
 
 void testComplement() {

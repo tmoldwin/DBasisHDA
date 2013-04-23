@@ -9,7 +9,6 @@
 Implication::Implication(std::vector<int> * lhs, std::vector<int> * rhs) {
 	leftHandSide = lhs;
 	rightHandSide = rhs;
-
 }
 
 std::string Implication::toString() {

@@ -1,6 +1,6 @@
 //
 //  Table.h
-//  
+//
 //
 //  Created by Joshua A Blumenkopf on 4/16/13.
 //
@@ -15,21 +15,15 @@
 #include "Implication.h"
 #ifndef ____Table__
 #define ____Table__
-<<<<<<< HEAD
 
 class Table {
 public:
-=======
-class Table
-{
->>>>>>> broke implication into header and main file, started testing table in main
     std::vector<std::vector<char> > matrix;
     std::vector<Implication> implications;
     std::map<int, int> reducedToOriginal;
     std::map<int, std::vector<int> > equivalentColumns;
 private:
-<<<<<<< HEAD
-
+    
     int compareColumns(int column1, int column2)//
     {
         int a = 0;
@@ -51,7 +45,7 @@ private:
         }
         return a;
     };
-
+    
     void reduceTable() {
         // following loop removes columns with all ones
         for (int i = 0; i < matrix.size(); i++) {
@@ -63,11 +57,11 @@ private:
                         // insert statement mapping new columns to old
                     }
                 }
-
+                
             }
         }
         // following loop collapses indentical columns together
-
+        
         for (int i = 0; i < matrix[0].size() - 1; i++) {
             for (int j = i; j < matrix[0].size(); j++) {
                 if (compareColumns(i, j) == 1) {
@@ -75,11 +69,11 @@ private:
                         matrix[k].erase(matrix[k].begin() + j);
                         // insert statement mapping new columns to old
                     }
-
+                    
                 }
             }
         }
-
+        
         // following loop removes columns whose closure i\column is not closed
         for (int i = 0; i < matrix[0].size(); i++) {
             std::vector<int> closure; //contains closure i\column in form of 1s
@@ -104,7 +98,7 @@ private:
                         if (closure[k] == 1 && matrix[j][k] == 0)break;
                         if (k == matrix[0].size() - 1) a = true;
                     }
-
+                    
                 }
             }
             if (a = false) {
@@ -112,37 +106,24 @@ private:
                     matrix[k].erase(matrix[k].begin() + i);
                     // insert statement mapping new columns to old
                 }
-
+                
             }
-
+            
         }
-
-
-
+        
+        
+        
     };
 public:
-
+    
     Table(std::vector<std::vector<char> > inputtable) {
         matrix = inputtable;
         reduceTable();
     };
-
+    
     std::vector<std::vector<char> > get_matrix() {
         return matrix;
     };
-=======
-    int compareColumns(int column1, int column2);//more 1s is considered smaller column
-    
-    void reduceTable();
-   
-public:
-    Table(std::vector<std::vector<char> > inputtable){
-        matrix=inputtable;
-       // reduceTable();
-    }
-    std::vector<std::vector<char> >  get_matrix(){reduceTable();return matrix;}
-    std::vector<Implication> FindSBasis();
->>>>>>> broke implication into header and main file, started testing table in main
 };
 #include <iostream>
 

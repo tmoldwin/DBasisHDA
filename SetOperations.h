@@ -1,6 +1,6 @@
-/* 
+/*
  * File:   SetOperations.h
- * 
+ *
  * Author: Toviah Moldwin
  *
  * Created on April 18, 2013, 4:14 PM
