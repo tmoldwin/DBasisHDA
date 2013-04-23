@@ -54,7 +54,15 @@ void printMatrix(std::vector<std::vector<char> > * matrix) {
 
 void testReadFile() {
     std::vector<std::vector<char> > * matrix = readTable("table1.txt");
+    
     printMatrix(matrix);
+}
+
+void testReduceTable(){
+    std::vector<std::vector<char> >  matrix = *readTable("tablereducetest2.txt");
+    Table test(matrix);
+    std::vector<std::vector<char> >  matrix3=test.get_matrix();
+    printMatrix(&matrix3);
 }
 
 int main(int argc, char **argv) {
@@ -66,4 +74,6 @@ int main(int argc, char **argv) {
     testComplement();
     std::cout << "\nTesting Intersection\n";
     testIntersection();
+    std::cout << "\nTesting Reduction\n";
+    testReduceTable();
 }
