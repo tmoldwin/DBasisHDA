@@ -6,13 +6,13 @@
 //
 //
 
- #include "Table.h"
-void Table::reduceTable()
-{
+#include "Table.h"
+
+void Table::reduceTable() {
     // following loop removes columns with all ones
     for (int i = 0; i < matrix[0].size(); i++) {
         for (int j = 0; j < matrix.size(); j++) {
-            if ((matrix[j][i] )!='1') break;
+            if ((matrix[j][i]) != '1') break;
             if (j == (matrix.size() - 1)) {
                 for (int k = 0; k < matrix.size(); k++) {
                     matrix[k].erase(matrix[k].begin() + i);
@@ -20,13 +20,13 @@ void Table::reduceTable()
                 }
                 i--;
             }
-            
+
         }
     }
     // following loop collapses indentical columns together, probably unnecessary as next loop will remove them anyway
 
     for (int i = 0; i < matrix[0].size() - 1; i++) {
-        for (int j = i+1; j < matrix[0].size(); j++) {
+        for (int j = i + 1; j < matrix[0].size(); j++) {
             if (compareColumns(i, j) == 0) {
                 for (int k = 0; k < matrix.size(); k++) {
                     matrix[k].erase(matrix[k].begin() + j);
@@ -36,7 +36,7 @@ void Table::reduceTable()
             }
         }
     }
-    
+
     // following loop removes columns whose closure i\column is not closed
     for (int i = 0; i < matrix[0].size(); i++) {
         std::vector<int> closure; //contains closure i\column in form of 1s
@@ -56,12 +56,12 @@ void Table::reduceTable()
         //see if support of closure=support of column by seeing if it is not less
         bool a = false; //a false means no difference in support has been found
         for (int j = 0; j < matrix.size() && a == false; j++) {
-            if (matrix[j][i] != '1' ) {
+            if (matrix[j][i] != '1') {
                 for (int k = 0; k < matrix[0].size(); k++) {
                     if (closure[k] == 1 && matrix[j][k] != '1')break;
                     if (k == matrix[0].size() - 1) a = true;
                 }
-                
+
             }
         }
         if (a == false) {
@@ -71,31 +71,30 @@ void Table::reduceTable()
             }
             i--;
         }
-        
+
     }
     // following loop removes rows with all ones
     for (int i = 0; i < matrix.size(); i++) {
         for (int j = 0; j < matrix[0].size(); j++) {
-            if ((matrix[i][j] )!='1') break;
-            if (j == (matrix[0].size() - 1))
-            {
-                    matrix.erase(matrix.begin() + i);
+            if ((matrix[i][j]) != '1') break;
+            if (j == (matrix[0].size() - 1)) {
+                matrix.erase(matrix.begin() + i);
                 i--;
             }
-            
+
         }
     }
     // following loop collapses indentical rows together, probably unnecessary as next loop will remove them anyway
-    
+
     for (int i = 0; i < matrix.size() - 1; i++) {
-        for (int j = i+1; j < matrix.size(); j++) {
+        for (int j = i + 1; j < matrix.size(); j++) {
             if (compareRows(i, j) == 0) {
-                    matrix.erase(matrix.begin() + j);
+                matrix.erase(matrix.begin() + j);
                 j--;
             }
         }
     }
-    
+
     // following loop removes rows whose closure i\row is not closed
     for (int i = 0; i < matrix.size(); i++) {
         std::vector<int> closure; //contains closure i\row in form of 1s
@@ -115,58 +114,57 @@ void Table::reduceTable()
         //see if support of closure=support of row by seeing if it is not less
         bool a = false; //a false means no difference in support has been found
         for (int j = 0; j < matrix[0].size() && a == false; j++) {
-            if (matrix[i][j] != '1' ) {
+            if (matrix[i][j] != '1') {
                 for (int k = 0; k < matrix.size(); k++) {
                     if (closure[k] == 1 && matrix[k][j] != '1')break;
                     if (k == matrix.size() - 1) a = true;
                 }
-                
+
             }
         }
         if (a == false) {
             matrix.erase(matrix.begin() + i);
             i--;
         }
-        
+
     }
 
-    
+
 };
-int Table::compareColumns(int column1, int column2)
-{
+
+int Table::compareColumns(int column1, int column2) {
     int a = 0;
     for (int i = 0; i < matrix.size(); i++) {
-        if (matrix[i][column1]=='1' && matrix[i][column2]!='1') {
+        if (matrix[i][column1] == '1' && matrix[i][column2] != '1') {
             if (a == 0 || a == -1)a = -1;
-                else {
-                    a = -2;
-                    break;
-                }
+            else {
+                a = -2;
+                break;
+            }
         }
-        if (matrix[i][column1]!='1' && matrix[i][column2]=='1') {
+        if (matrix[i][column1] != '1' && matrix[i][column2] == '1') {
             if (a == 0 || a == 1)a = 1;
-                else {
-                    a = -2;
-                    break;
-                }
+            else {
+                a = -2;
+                break;
+            }
         }
     }
 
     return a;
 };
 
-int Table::compareRows(int row1, int row2)
-{
+int Table::compareRows(int row1, int row2) {
     int a = 0;
     for (int i = 0; i < matrix[0].size(); i++) {
-        if (matrix[row1][i]=='1' && matrix[row2][i]!='1') {
+        if (matrix[row1][i] == '1' && matrix[row2][i] != '1') {
             if (a == 0 || a == 1)a = 1;
             else {
                 a = -2;
                 break;
             }
         }
-        if (matrix[row1][i]!='1' && matrix[row2][i]=='1') {
+        if (matrix[row1][i] != '1' && matrix[row2][i] == '1') {
             if (a == 0 || a == -1)a = -1;
             else {
                 a = -2;
@@ -174,40 +172,87 @@ int Table::compareRows(int row1, int row2)
             }
         }
     }
-    
+
     return a;
 };
-void Table::createUpandDownArrows()
-{
+
+void Table::createUpandDownArrows() {
     //up arrows
-    for (int i=0; i<matrix[0].size(); i++) {
-        for (int j=0; j<matrix.size(); j++) {
-            if (matrix[j][i]!='1') {
-                for (int k=0; k<matrix.size(); k++) {
-                    if (compareRows(j,k)==-1&& matrix[k][i]!='1')  break;
-                    if(k==matrix.size()-1)matrix[j][i]='u';
+    for (int i = 0; i < matrix[0].size(); i++) {
+        for (int j = 0; j < matrix.size(); j++) {
+            if (matrix[j][i] != '1') {
+                for (int k = 0; k < matrix.size(); k++) {
+                    if (compareRows(j, k) == -1 && matrix[k][i] != '1') break;
+                    if (k == matrix.size() - 1)matrix[j][i] = 'u';
                 }
             }
         }
-       
+
     }
-    
+
     //down arrows
-    for (int i=0; i<matrix.size(); i++) {
-        for (int j=0; j<matrix[0].size(); j++) {
-            if (matrix[i][j]!='1') {
-                for (int k=0; k<matrix[0].size(); k++) {
-                    if (compareColumns(j,k)==1&& matrix[i][k]!='1')  break;
-                    if(k==matrix[0].size()-1){
-                        if (matrix[i][j]=='u')  matrix[i][j]='b';
-                         else   matrix[i][j]='d';
+    for (int i = 0; i < matrix.size(); i++) {
+        for (int j = 0; j < matrix[0].size(); j++) {
+            if (matrix[i][j] != '1') {
+                for (int k = 0; k < matrix[0].size(); k++) {
+                    if (compareColumns(j, k) == 1 && matrix[i][k] != '1') break;
+                    if (k == matrix[0].size() - 1) {
+                        if (matrix[i][j] == 'u') matrix[i][j] = 'b';
+                        else matrix[i][j] = 'd';
                     }
                 }
             }
         }
-        
+
     }
 
-    
-    
+
+
 };
+
+void Table::createColumnComparisonTable() {
+    int numColumns = matrix[0].size();
+    std::vector<int> row(numColumns);
+    columnComparisonTable = std::vector<std::vector<int> >(numColumns, row);
+    for (int i = 0; i < numColumns; i++) {
+        for (int j = 0; j < numColumns; j++) {
+            columnComparisonTable[i][j] = compareColumns(i, j);
+        }
+    }
+}
+
+
+//if column b->a, that means that b has more ones than a, or b < a = a > b.
+
+std::vector<Implication> Table::getBinaryBasis(int column) {
+    std::vector<Implication> implications = std::vector<Implication>();
+    int numColumns = columnComparisonTable.size();
+    for (int i = 0; i < numColumns; i++) {
+        if (columnComparisonTable[column][i] == 1) {
+            std::vector<int>  rhs =  std::vector<int>();
+            rhs.push_back(column);
+            std::vector<int>  lhs =  std::vector<int>();
+            lhs.push_back(i);
+            Implication implication = Implication(lhs, rhs);
+            implications.push_back(implication);           
+        }
+    }
+    //printImplications(*implications);
+    return implications;
+}
+
+std::vector<Implication> Table::getFullBinaryBasis() {
+    std::vector<Implication> allImplications = std::vector<Implication>();
+    int numColumns = columnComparisonTable[0].size();
+    for (int i = 0; i < numColumns; i++) {
+        std::vector<Implication> implications = getBinaryBasis(i);
+        allImplications.insert(allImplications.end(), implications.begin(), implications.end());
+    }
+    return allImplications;
+}
+
+void printImplications(std::vector<Implication> implications) {
+    for (int i = 0; i < implications.size(); i++) {
+        std::cout << implications[i].toString() << "\n";
+    }
+}

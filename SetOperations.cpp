@@ -48,6 +48,7 @@ void testComplement() {
     printVector(complement1);
     delete v1;
     delete v2;
+    delete &complement1;
 }
 
 void testIntersection(){
@@ -67,4 +68,5 @@ void testIntersection(){
     printVector(intersection1);
     delete v1;
     delete v2;
+    delete &intersection1;
 }

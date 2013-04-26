@@ -11,15 +11,11 @@
 
 class Implication {
 private:
-	std::vector<int> * leftHandSide;
-	std::vector<int> * rightHandSide;
+	std::vector<int>  leftHandSide;
+	std::vector<int>  rightHandSide;
 public:
-	Implication(std::vector<int> * lhs, std::vector<int> * rhs);
+	Implication(std::vector<int>  lhs, std::vector<int>  rhs);
 	std::string toString();
-	~Implication(){
-		delete leftHandSide;
-		delete rightHandSide;
-	}
 };
 
 void testImplication();
