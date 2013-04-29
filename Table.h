@@ -13,6 +13,7 @@
 #include<iostream>
 #include <cstdlib>
 #include "Implication.h"
+#include "SetOperations.h"
 #ifndef ____Table__
 #define ____Table__
 
@@ -20,7 +21,7 @@ class Table {
 private:
     std::vector<std::vector<char> > matrix;
     std::vector<std::vector<int> > columnComparisonTable;
-    std::vector<Implication> implications;
+    std::vector<Implication> completeImplications;
     std::map<int, int> reducedToOriginal;
     std::map<int, std::vector<int> > equivalentColumns;
     
@@ -36,12 +37,29 @@ public:
         reduceTable();
         createColumnComparisonTable();
         createUpandDownArrows();
+      
+    };
+    
+    
+    std::vector<Implication> FindSBasis(){
+        
+        completeImplications=getFullBinaryBasis();
+        std::vector<Implication> nonbinary=getFullNonBinaryBasis();
+         completeImplications.insert(completeImplications.end(),nonbinary.begin(),nonbinary.end());
+        return completeImplications;
     };
     
     std::vector<Implication> getBinaryBasis(int column); //Gets the binary basis for a particular column
     
     std::vector<Implication> getFullBinaryBasis();    //Gets the binary basis for the entire table
+    std::vector<int> getxD (int column); //returns xD for a particular column
+    std::vector<int> getMx (int column);//returns Mx for a particular column
+    std::vector<std::vector<int> >getFamilies (int column);
+
+    std::vector<Implication> getNonBinaryBasis(int column); //Gets the nonbinary basis for a particular column
     
+    std::vector<Implication> getFullNonBinaryBasis();    //Gets the nonbinary basis for the entire table
+
     std::vector<std::vector<char> > get_matrix() {
         return matrix;
     };
