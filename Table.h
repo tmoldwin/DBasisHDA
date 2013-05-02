@@ -54,7 +54,7 @@ public:
     std::vector<Implication> getFullBinaryBasis();    //Gets the binary basis for the entire table
     std::vector<int> getxD (int column); //returns xD for a particular column
     std::vector<int> getMx (int column);//returns Mx for a particular column
-    std::vector<std::vector<int> >getFamilies (int column);
+    std::vector<std::vector<int> >getComplementedFamilies (int column);
 
     std::vector<Implication> getNonBinaryBasis(int column); //Gets the nonbinary basis for a particular column
     
