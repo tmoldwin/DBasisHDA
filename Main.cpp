@@ -50,6 +50,7 @@ void printMatrix(std::vector<std::vector<char> > * matrix) {
     }
 }
 
+//this is for printing the matrix of row/column comparisons
 void printMatrix(std::vector<std::vector<int> > * matrix) {
     int numRows = matrix->size();
     int numColumns = (*matrix)[0].size();
@@ -67,15 +68,22 @@ void testReadFile() {
     delete matrix;
 }
 
-void testComparisonTable(){
+void testColumnComparisonTable(){
     std::vector<std::vector<char> > * m = readTable("tablereducetest3.txt");
     std::vector<std::vector<char> >  matrix = *m;
     Table test1(matrix);
-    std::vector<std::vector<int> >  comparisonTable = test1.get_ComparisonTable();
+    std::vector<std::vector<int> >  comparisonTable = test1.getColumnComparisonTable();
     printMatrix(&comparisonTable);
     delete m;
 }
-
+void testRowComparisonTable(){
+    std::vector<std::vector<char> > * m = readTable("tablereducetest3.txt");
+    std::vector<std::vector<char> >  matrix = *m;
+    Table test1(matrix);
+    std::vector<std::vector<int> >  comparisonTable = test1.getRowComparisonTable();
+    printMatrix(&comparisonTable);
+    delete m;
+}
 void testReduceTable(){
    std::vector<std::vector<char> > * m = readTable("tableupdowntest.txt");
     std::vector<std::vector<char> >  matrix = *m;
@@ -113,8 +121,10 @@ int main(int argc, char **argv) {
     testIntersection();
     std::cout << "\nTesting Reduction\n";
     testReduceTable();
-    std::cout << "\nTesting ComparisonTable\n";
-    testComparisonTable();
+    std::cout << "\nTesting ColumnComparisonTable\n";
+    testColumnComparisonTable();
+    std::cout << "\nTesting RowComparisonTable\n";
+    testRowComparisonTable();
     std::cout << "\nTesting GetBinaryBasis\n";
     testGetBinaryBasis();
     std::cout << "\nTesting GetNonBinaryBasis\n";

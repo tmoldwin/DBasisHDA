@@ -220,37 +220,50 @@ void Table::createColumnComparisonTable() {
         }
     }
 }
-std::vector<int> Table::getxD (int column){
+
+void Table::createRowComparisonTable() {
+    int numRows = matrix.size();
+    std::vector<int> row(numRows);
+    rowComparisonTable = std::vector<std::vector<int> >(numRows, row);
+    for (int i = 0; i < numRows; i++) {
+        for (int j = 0; j < numRows; j++) {
+           rowComparisonTable[i][j] = compareRows(i, j);
+        }
+    }
+}
+
+std::vector<int> Table::getxD(int column) {
     std::vector<int> xD;
-    for (int i=0; i<matrix.size(); i++) {
-        if (matrix[i][column]=='u'||matrix[i][column]=='b') {
-            for (int j=0; j<matrix[0].size(); j++) {
-                if ((matrix[i][j]=='d'||matrix[i][j]=='b')&&j!=column)xD.push_back(j);
+    for (int i = 0; i < matrix.size(); i++) {
+        if (matrix[i][column] == 'u' || matrix[i][column] == 'b') {
+            for (int j = 0; j < matrix[0].size(); j++) {
+                if ((matrix[i][j] == 'd' || matrix[i][j] == 'b') && j != column)xD.push_back(j);
             }
         }
     }
     return xD;
 
 } //returns xD for a particular column
-std::vector<int> Table::getMx (int column){
+
+std::vector<int> Table::getMx(int column) {
     std::vector<int> Mx;
-    for (int i=0; i<matrix.size(); i++) {
-        if(matrix[i][column]=='u'||matrix[i][column]=='b')Mx.push_back(i);
-      /* not needed  if (matrix[i][column]!=1) {
-            for (int j=0; j<Mx.size(); j++) {
-                if (compareRows(i,Mx[j])==1) {
-                    Mx.erase(Mx.begin()+j);
-                    Mx.push_back(i);
-                    break;
-                }
-                if (compareRows(i,Mx[j])==-1) {
-                    break;
-                }
-                if (j==Mx.size()-1) {
-                    Mx.push_back(i);
-                }
-            }
-        }*/ 
+    for (int i = 0; i < matrix.size(); i++) {
+        if (matrix[i][column] == 'u' || matrix[i][column] == 'b')Mx.push_back(i);
+        /* not needed  if (matrix[i][column]!=1) {
+              for (int j=0; j<Mx.size(); j++) {
+                  if (compareRows(i,Mx[j])==1) {
+                      Mx.erase(Mx.begin()+j);
+                      Mx.push_back(i);
+                      break;
+                  }
+                  if (compareRows(i,Mx[j])==-1) {
+                      break;
+                  }
+                  if (j==Mx.size()-1) {
+                      Mx.push_back(i);
+                  }
+              }
+          }*/
     }
     return Mx;
 
@@ -267,66 +280,63 @@ std::vector<int> Table::getMx (int column){
 
 }*/
 
-std::vector< std::vector<int> >  Table::getComplementedFamilies (int column)
-{
-    std::vector<int> Mx=getMx(column);
-    std::vector<int> xD=getxD(column);
-    
-   std::vector<std::vector<int> >  families(Mx.size());
+std::vector< std::vector<int> > Table::getComplementedFamilies(int column) {
+    std::vector<int> Mx = getMx(column);
+    std::vector<int> xD = getxD(column);
+
+    std::vector<std::vector<int> > families(Mx.size());
     std::vector<int> temporary;
-    for (int i=0; i<Mx.size(); i++) {
-        temporary=xD;
-        for (int j=0; j<temporary.size(); j++) {
-            if (matrix[Mx[i]][temporary[j]]=='1') {
-                temporary.erase(temporary.begin()+j);
+    for (int i = 0; i < Mx.size(); i++) {
+        temporary = xD;
+        for (int j = 0; j < temporary.size(); j++) {
+            if (matrix[Mx[i]][temporary[j]] == '1') {
+                temporary.erase(temporary.begin() + j);
                 j--;
             }
         }
-        families[i]=temporary;
-        for (unsigned int k=0; k<temporary.size(); k++) {
-            std::cout<<column<<" "<<i<<" "<<Mx[i]<<" "<<temporary[k]<<"\n";
+        families[i] = temporary;
+        for (unsigned int k = 0; k < temporary.size(); k++) {
+            std::cout << column << " " << i << " " << Mx[i] << " " << temporary[k] << "\n";
 
         }
     }
- /* incorrect assumption  for (int i=0; i<matrix.size(); i++) {
-       if (matrix[i][column]=='u'||matrix[i][column]=='b')
-       {
-           bool k=false;
-           for (int j=0; j<matrix[0].size(); j++) {
-               if((matrix[i][j]=='d'||matrix[i][j]=='b')&&j!=column)
-               {
-                   if (k==false) {
-                       k=true;
+    /* incorrect assumption  for (int i=0; i<matrix.size(); i++) {
+          if (matrix[i][column]=='u'||matrix[i][column]=='b')
+          {
+              bool k=false;
+              for (int j=0; j<matrix[0].size(); j++) {
+                  if((matrix[i][j]=='d'||matrix[i][j]=='b')&&j!=column)
+                  {
+                      if (k==false) {
+                          k=true;
                        
-                       families.push_back(std::vector<int>(1,j));
-                   }
-                   else families[families.size()-1].push_back(j);
-                   std::cout<<column<<" "<<families.size()-1<<" "<<i<<" "<<j<<"\n";
-               }
-           }
-       }
-    }*/
+                          families.push_back(std::vector<int>(1,j));
+                      }
+                      else families[families.size()-1].push_back(j);
+                      std::cout<<column<<" "<<families.size()-1<<" "<<i<<" "<<j<<"\n";
+                  }
+              }
+          }
+       }*/
     return families;
 }
 
-
-
 std::vector<Implication> Table::getNonBinaryBasis(int column) {
     std::vector<Implication> implications = std::vector<Implication>();
-   // std::vector<int> xD=getxD(column);
-   // getMx(column);
-    std::vector< std::vector<int> >  families=getComplementedFamilies(column);
-   // std::vector<int> families=getFamilies(xD,getMx(column));
+    // std::vector<int> xD=getxD(column);
+    // getMx(column);
+    std::vector< std::vector<int> > families = getComplementedFamilies(column);
+    // std::vector<int> families=getFamilies(xD,getMx(column));
     //std::vector<int>complement=complement(families,xD);
     // now we need to run hypergraph dualization
     return implications;
 }
 
 std::vector<Implication> Table::getFullNonBinaryBasis() {
-   std::vector<Implication> allnonbinaryImplications;
-    for (int i=0; i<matrix[0].size(); i++) {
-        std::vector<Implication> nonbinarybasisi=getNonBinaryBasis(i);
-        allnonbinaryImplications.insert(allnonbinaryImplications.end(),nonbinarybasisi.begin(),nonbinarybasisi.begin());
+    std::vector<Implication> allnonbinaryImplications;
+    for (int i = 0; i < matrix[0].size(); i++) {
+        std::vector<Implication> nonbinarybasisi = getNonBinaryBasis(i);
+        allnonbinaryImplications.insert(allnonbinaryImplications.end(), nonbinarybasisi.begin(), nonbinarybasisi.begin());
     }
     return allnonbinaryImplications;
 }
@@ -338,12 +348,12 @@ std::vector<Implication> Table::getBinaryBasis(int column) {
     int numColumns = columnComparisonTable.size();
     for (int i = 0; i < numColumns; i++) {
         if (columnComparisonTable[column][i] == 1) {
-            std::vector<int>  rhs =  std::vector<int>();
+            std::vector<int> rhs = std::vector<int>();
             rhs.push_back(column);
-            std::vector<int>  lhs =  std::vector<int>();
+            std::vector<int> lhs = std::vector<int>();
             lhs.push_back(i);
             Implication implication = Implication(lhs, rhs);
-            implications.push_back(implication);           
+            implications.push_back(implication);
         }
     }
     //printImplications(*implications);
