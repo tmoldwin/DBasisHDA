@@ -178,11 +178,20 @@ int Table::compareRows(int row1, int row2) {
 
 void Table::createUpandDownArrows() {
     //up arrows
+ //   int d=0;
     for (int i = 0; i < matrix[0].size(); i++) {
         for (int j = 0; j < matrix.size(); j++) {
             if (matrix[j][i] != '1') {
                 for (int k = 0; k < matrix.size(); k++) {
-                    if (compareRows(j, k) == -1 && matrix[k][i] != '1') break;
+                    if (matrix[k][i] != '1')
+                    {
+   //                     d++;
+                        if (rowComparisonTable[j][k] == -1 ) {
+                            break;
+
+                        }
+                    }
+                    
                     if (k == matrix.size() - 1)matrix[j][i] = 'u';
                 }
             }
@@ -195,7 +204,16 @@ void Table::createUpandDownArrows() {
         for (int j = 0; j < matrix[0].size(); j++) {
             if (matrix[i][j] != '1') {
                 for (int k = 0; k < matrix[0].size(); k++) {
-                    if (compareColumns(j, k) == 1 && matrix[i][k] != '1') break;
+                    if (matrix[i][k] != '1')
+                    {
+ //                       d++;
+                        if (columnComparisonTable[j][k] == -1 ) {
+                            break;
+                            
+                        }
+
+                    }
+                    
                     if (k == matrix[0].size() - 1) {
                         if (matrix[i][j] == 'u') matrix[i][j] = 'b';
                         else matrix[i][j] = 'd';
@@ -206,7 +224,7 @@ void Table::createUpandDownArrows() {
 
     }
 
-
+ //   std::cout<<d;
 
 };
 
@@ -237,7 +255,7 @@ std::vector<int> Table::getxD(int column) {
     for (int i = 0; i < matrix.size(); i++) {
         if (matrix[i][column] == 'u' || matrix[i][column] == 'b') {
             for (int j = 0; j < matrix[0].size(); j++) {
-                if ((matrix[i][j] == 'd' || matrix[i][j] == 'b') && j != column)xD.push_back(j);
+                if ( j != column&& (matrix[i][j] == 'd' || matrix[i][j] == 'b'))xD.push_back(j);
             }
         }
     }
@@ -327,7 +345,6 @@ std::vector<Implication> Table::getNonBinaryBasis(int column) {
     // getMx(column);
     std::vector< std::vector<int> > families = getComplementedFamilies(column);
     // std::vector<int> families=getFamilies(xD,getMx(column));
-    //std::vector<int>complement=complement(families,xD);
     // now we need to run hypergraph dualization
     return implications;
 }
