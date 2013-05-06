@@ -30,7 +30,7 @@ private:
                                                         * Comparison table for rows, similar to columnComparisonTable
                                                         */
     std::vector<Implication> completeImplications;
-    std::map<int, int> reducedToOriginal;
+    std::vector<int> reducedToOriginal;
     std::map<int, std::vector<int> > equivalentColumns;
 
     int compareColumns(int column1, int column2); //more ones is smaller column; column numbering starts from 0

@@ -85,7 +85,9 @@ void testRowComparisonTable(){
     delete m;
 }
 void testReduceTable(){
-   std::vector<std::vector<char> > * m = readTable("tableupdowntest.txt");
+   std::vector<std::vector<char> > * m = readTable("tablereducetest2.txt");
+    printMatrix(m);
+
     std::vector<std::vector<char> >  matrix = *m;
     Table test(matrix);
     std::vector<std::vector<char> >  matrix3=test.get_matrix();
@@ -103,7 +105,7 @@ void testGetBinaryBasis(){
 }
 void testGetFullNonBinaryBasis()
 {
-    std::vector<std::vector<char> > * m = readTable("tableupdowntest.txt");
+    std::vector<std::vector<char> > * m = readTable("tablereducetest.txt");
     std::vector<std::vector<char> >  matrix = *m;
     Table test(matrix);
     test.getFullNonBinaryBasis();

@@ -9,6 +9,12 @@
 #include "Table.h"
 
 void Table::reduceTable() {
+    //initializing map from old to new table
+    for (int i=0; i < matrix[0].size(); i++) {
+        reducedToOriginal.push_back(i);
+    }
+
+
     // following loop removes columns with all ones
     for (int i = 0; i < matrix[0].size(); i++) {
         for (int j = 0; j < matrix.size(); j++) {
@@ -16,13 +22,17 @@ void Table::reduceTable() {
             if (j == (matrix.size() - 1)) {
                 for (int k = 0; k < matrix.size(); k++) {
                     matrix[k].erase(matrix[k].begin() + i);
-                    // insert statement mapping new columns to old
                 }
+                equivalentColumns[reducedToOriginal[i]]=std::vector<int>(0,0);
+                for (int l=i;l < matrix[0].size() ; l++) {
+                    reducedToOriginal[l]++;
+                }
+                 reducedToOriginal.pop_back();
                 i--;
             }
-
         }
     }
+
     // following loop collapses indentical columns together, probably unnecessary as next loop will remove them anyway
 
     for (int i = 0; i < matrix[0].size() - 1; i++) {
@@ -30,8 +40,12 @@ void Table::reduceTable() {
             if (compareColumns(i, j) == 0) {
                 for (int k = 0; k < matrix.size(); k++) {
                     matrix[k].erase(matrix[k].begin() + j);
-                    // insert statement mapping new columns to old
                 }
+                equivalentColumns[reducedToOriginal[j]]=std::vector<int>(1,reducedToOriginal[i]);
+                for (int l=j;l < matrix[0].size() ; l++) {
+                    reducedToOriginal[l]++;
+                }
+                reducedToOriginal.pop_back();
                 j--;
             }
         }
@@ -67,11 +81,31 @@ void Table::reduceTable() {
         if (a == false) {
             for (int k = 0; k < matrix.size(); k++) {
                 matrix[k].erase(matrix[k].begin() + i);
-                // insert statement mapping new columns to old
             }
+            equivalentColumns[reducedToOriginal[i]]=std::vector<int>();
+            for (int l=0; l<closure.size(); l++) {
+                if (closure[l]==1) {
+                    equivalentColumns[reducedToOriginal[i]].push_back(reducedToOriginal[l]);
+                }
+            }
+            for (int l=i;l < matrix[0].size() ; l++) {
+                reducedToOriginal[l]++;
+            }
+            reducedToOriginal.pop_back();
             i--;
         }
 
+    }
+    for (int i=0; i<reducedToOriginal.size(); i++) {
+        std::cout<<reducedToOriginal[i];
+    }
+    std::cout << '\n';
+    for (std::map<int,std::vector<int> >::iterator it=equivalentColumns.begin(); it!=equivalentColumns.end(); ++it){
+        std::cout << it->first << " => ";
+        for (int i=0; i<it->second.size();i++) {
+           std::cout << it->second[i];
+        }
+        std::cout << '\n';
     }
     // following loop removes rows with all ones
     for (int i = 0; i < matrix.size(); i++) {
