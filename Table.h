@@ -8,6 +8,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <sstream>
 #include <vector>
 #include <map>
 #include<iostream>
@@ -60,13 +61,13 @@ public:
     std::vector<Implication> getBinaryBasis(int column); //Gets the binary basis for a particular column
 
     std::vector<Implication> getFullBinaryBasis(); //Gets the binary basis for the entire table
-    
+
     std::vector<int> getxD(int column); //returns xD for a particular column
-    
+
     std::vector<int> getMx(int column); //returns Mx for a particular column
-    
+
     std::vector<std::vector<int> >getComplementedFamilies(int column);
-    
+
     void writeComplementedFamilies(std::vector< std::vector<int> > families);
 
     std::vector<Implication> readDualToImplication(int column);

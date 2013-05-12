@@ -163,7 +163,7 @@ void Table::reduceTable() {
 
     }
 
-    
+
 };
 
 int Table::compareColumns(int column1, int column2) {
@@ -287,24 +287,21 @@ std::vector<int> Table::getxD(int column) {
     for (int i = 0; i < matrix.size(); i++) {
         if (matrix[i][column] == 'u' || matrix[i][column] == 'b') {
             for (int j = 0; j < matrix[0].size(); j++) {
-                if (j != column && (matrix[i][j] == 'd' || matrix[i][j] == 'b'))
-                {
-                    if (xD.size()==0) {
+                if (j != column && (matrix[i][j] == 'd' || matrix[i][j] == 'b')) {
+                    if (xD.size() == 0) {
                         xD.push_back(j);
-                    }
-                    else
-                    {
-                    for (unsigned int k=0; k<xD.size(); k++)// making sure not to add duplicates
-                    {
-                        if (xD[k]==j) {
-                            break;
-                        }
-                        if (k==(xD.size()-1)) {
-                            xD.push_back(j);
-                            break;
-                        }
+                    } else {
+                        for (unsigned int k = 0; k < xD.size(); k++)// making sure not to add duplicates
+                        {
+                            if (xD[k] == j) {
+                                break;
+                            }
+                            if (k == (xD.size() - 1)) {
+                                xD.push_back(j);
+                                break;
+                            }
 
-                    }
+                        }
                     }
                 }
             }
@@ -348,8 +345,10 @@ std::vector<int> Table::getMx(int column) {
     }
 
 }*/
-void printFamilies(std::vector<std::vector<int> >  families) {
-    int numRows = families.size();  
+//prints families to the screen. For debugging only
+
+void printFamilies(std::vector<std::vector<int> > families) {
+    int numRows = families.size();
     for (int i = 0; i < numRows; i++) {
         int numColumns = families[i].size();
         for (int j = 0; j < numColumns; j++) {
@@ -373,7 +372,7 @@ std::vector< std::vector<int> > Table::getComplementedFamilies(int column) {
                 j--;
             }
         }
-        if (temporary.size()>0)//only adding nonempty families
+        if (temporary.size() > 0)//only adding nonempty families
         {
             families.push_back(temporary);
 
@@ -406,38 +405,44 @@ std::vector< std::vector<int> > Table::getComplementedFamilies(int column) {
 }
 
 //Writes the complemented families for a particular column to a table to a file, to be read by the HDA program)
+
 void Table::writeComplementedFamilies(std::vector< std::vector<int> > families) {
     std::ofstream myfile;
     myfile.open("families.dat");
-    for (int i = 0; i < families.size(); i++) {
+    int numFamilies = families.size();
+    for (int i = 0; i < numFamilies; i++) {
         std::vector<int> family = families[i];
-        for (int j = 0; j < family.size(); j++) {
+        int familySize = family.size();
+        for (int j = 0; j < familySize; j++) {
             myfile << family[j] << " ";
         }
-        myfile <<" "<<i<< "\n";
+        if (i != numFamilies - 1) { //makes sure we don't add an extra newline
+            myfile << "\n";
+        }
     }
     myfile.close();
 }
 
 //reads the dual from the output file, turns it into a set of implications for that column
+
 std::vector<Implication> Table::readDualToImplication(int column) {
     std::ifstream in_stream;
-    std::string line;
-    std::vector<int> rhs = std::vector<int>();
-    rhs.push_back(column);
     std::vector<Implication> implications = std::vector<Implication>();
     in_stream.open("dual.dat");
-    while (!in_stream.eof()) {
-        in_stream >> line;
+    for (std::string line; std::getline(in_stream, line);) {
         std::vector<int> hittingSet = std::vector<int>();
-        for (int i = 0; i < line.length(); i++) {
-            hittingSet.push_back(line[i]);
+        std::stringstream lineStream(line);
+        int num;
+        while (lineStream >> num) {
+            hittingSet.push_back(num);
         }
+        std::vector<int> rhs = std::vector<int>();
+        rhs.push_back(column);
         Implication implication = Implication(hittingSet, rhs);
         implications.push_back(implication);
     }
     in_stream.close();
-    
+
     return implications;
 }
 
@@ -450,7 +455,7 @@ std::vector<Implication> Table::getNonBinaryBasis(int column) {
     // now we need to run hypergraph dualization
     //Note: the following code is temporary, while we don't have access to call the function directly
     writeComplementedFamilies(families);
-    system("shd 09 families.dat dual.dat");
+    system(".\\shd 09 families.dat dual.dat");
     implications = readDualToImplication(column);
     //end of temporary
     return implications;
@@ -460,7 +465,7 @@ std::vector<Implication> Table::getFullNonBinaryBasis() {
     std::vector<Implication> allnonbinaryImplications;
     for (int i = 0; i < matrix[0].size(); i++) {
         std::vector<Implication> nonbinarybasisi = getNonBinaryBasis(i);
-        allnonbinaryImplications.insert(allnonbinaryImplications.end(), nonbinarybasisi.begin(), nonbinarybasisi.begin());
+        allnonbinaryImplications.insert(allnonbinaryImplications.end(), nonbinarybasisi.begin(), nonbinarybasisi.end());
     }
     return allnonbinaryImplications;
 }
@@ -480,7 +485,6 @@ std::vector<Implication> Table::getBinaryBasis(int column) {
             implications.push_back(implication);
         }
     }
-    //printImplications(*implications);
     return implications;
 }
 

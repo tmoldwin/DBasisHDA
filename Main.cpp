@@ -2,7 +2,7 @@
 #include <string>
 #include <fstream>
 #include <vector>
-#include<iostream>
+#include <iostream>
 #include <cstdlib>
 #include "Table.h"
 #include "Implication.h"
@@ -100,7 +100,7 @@ void testReduceTable() {
 }
 
 void testGetBinaryBasis() {
-    std::vector<std::vector<char> > * m = readTable("tablereducetest3.txt");
+    std::vector<std::vector<char> > * m = readTable("tablereducetest2.txt");
     std::vector<std::vector<char> > matrix = *m;
     Table test(matrix);
     std::vector<Implication> implications = test.getFullBinaryBasis();
@@ -126,10 +126,12 @@ void testGetNonBinaryBasis() {
 }
 
 void testGetFullNonBinaryBasis() {
-    std::vector<std::vector<char> > * m = readTable("tablereducetest.txt");
+    std::vector<std::vector<char> > * m = readTable("table1.txt");
     std::vector<std::vector<char> > matrix = *m;
     Table test(matrix);
-    test.getFullNonBinaryBasis();
+    std::vector<Implication> implications = test.getFullNonBinaryBasis();
+    std::cout << "numImplications " << implications.size();
+    printImplications(implications);
     delete m;
 }
 
@@ -143,7 +145,6 @@ void testWriteComplementedFamilies() {
         test.writeComplementedFamilies(test.getComplementedFamilies(i));
     }
      */
-    std::cout << "families for column" << 1 << "\n";
     test.writeComplementedFamilies(test.getComplementedFamilies(1));
     delete m;
 }
@@ -158,26 +159,27 @@ void testGetFullSBasis() {
 }
 
 int main(int argc, char **argv) {
-    std::cout << "\nTesting readFile()\n";
-    testReadFile();
-    std::cout << "\nTesting Implication\n";
-    testImplication();
-    std::cout << "\nTesting Reduction\n";
-    testReduceTable();
-    std::cout << "\nTesting ColumnComparisonTable\n";
-    testColumnComparisonTable();
-    std::cout << "\nTesting RowComparisonTable\n";
-    testRowComparisonTable();
-    std::cout << "\nTesting GetBinaryBasis\n";
-    testGetBinaryBasis();
-    std::cout << "\nTesting reduceTable\n";
-    testReduceTable();
-    std::cout << "\nTesting WriteFamilies\n";
-    testWriteComplementedFamilies();
-    //std::cout << "\nTesting getNonBinaryBasis\n";
-    //testGetNonBinaryBasis();
-    //std::cout << "\nTesting GetFullNonBinaryBasis\n";
-    //testGetFullNonBinaryBasis();
-    //std::cout << "\nTesting GetSBasis\n";
-    //testGetFullSBasis();          
+    /*    std::cout << "\nTesting readFile()\n";
+        testReadFile();
+        std::cout << "\nTesting Implication\n";
+        testImplication();
+        std::cout << "\nTesting Reduction\n";
+        testReduceTable();
+        std::cout << "\nTesting ColumnComparisonTable\n";
+        testColumnComparisonTable();
+        std::cout << "\nTesting RowComparisonTable\n";
+        testRowComparisonTable();
+        std::cout << "\nTesting reduceTable\n";
+        testReduceTable();
+         std::cout << "\nTesting GetBinaryBasis\n";
+        testGetBinaryBasis();
+        std::cout << "\nTesting WriteFamilies\n";
+        testWriteComplementedFamilies();
+        std::cout << "\nTesting getNonBinaryBasis\n";
+        testGetNonBinaryBasis();
+        std::cout << "\nTesting GetFullNonBinaryBasis\n";
+        testGetFullNonBinaryBasis();
+     */
+    std::cout << "\nTesting GetSBasis\n";
+    testGetFullSBasis();
 }
