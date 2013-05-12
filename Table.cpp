@@ -287,7 +287,26 @@ std::vector<int> Table::getxD(int column) {
     for (int i = 0; i < matrix.size(); i++) {
         if (matrix[i][column] == 'u' || matrix[i][column] == 'b') {
             for (int j = 0; j < matrix[0].size(); j++) {
-                if (j != column && (matrix[i][j] == 'd' || matrix[i][j] == 'b'))xD.push_back(j);
+                if (j != column && (matrix[i][j] == 'd' || matrix[i][j] == 'b'))
+                {
+                    if (xD.size()==0) {
+                        xD.push_back(j);
+                    }
+                    else
+                    {
+                    for (unsigned int k=0; k<xD.size(); k++)// making sure not to add duplicates
+                    {
+                        if (xD[k]==j) {
+                            break;
+                        }
+                        if (k==(xD.size()-1)) {
+                            xD.push_back(j);
+                            break;
+                        }
+
+                    }
+                    }
+                }
             }
         }
     }
@@ -300,7 +319,7 @@ std::vector<int> Table::getMx(int column) {
     for (int i = 0; i < matrix.size(); i++) {
         if (matrix[i][column] == 'u' || matrix[i][column] == 'b')Mx.push_back(i);
         /* not needed  if (matrix[i][column]!=1) {
-              for (int j=0; j<Mx.size(); j++) {
+              for (unsigned int j=0; j<Mx.size(); j++) {
                   if (compareRows(i,Mx[j])==1) {
                       Mx.erase(Mx.begin()+j);
                       Mx.push_back(i);
@@ -344,7 +363,7 @@ std::vector< std::vector<int> > Table::getComplementedFamilies(int column) {
     std::vector<int> Mx = getMx(column);
     std::vector<int> xD = getxD(column);
 
-    std::vector<std::vector<int> > families(Mx.size());
+    std::vector<std::vector<int> > families;
     std::vector<int> temporary;
     for (int i = 0; i < Mx.size(); i++) {
         temporary = xD;
@@ -354,7 +373,11 @@ std::vector< std::vector<int> > Table::getComplementedFamilies(int column) {
                 j--;
             }
         }
-        families[i] = temporary;
+        if (temporary.size()>0)//only adding nonempty families
+        {
+            families.push_back(temporary);
+
+        }
         for (unsigned int k = 0; k < temporary.size(); k++) {
             std::cout << column << " " << i << " " << Mx[i] << " " << temporary[k] << "\n";
 
@@ -391,7 +414,7 @@ void Table::writeComplementedFamilies(std::vector< std::vector<int> > families) 
         for (int j = 0; j < family.size(); j++) {
             myfile << family[j] << " ";
         }
-        myfile << "\n";
+        myfile <<" "<<i<< "\n";
     }
     myfile.close();
 }
