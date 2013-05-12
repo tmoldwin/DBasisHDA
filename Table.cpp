@@ -10,7 +10,7 @@
 
 void Table::reduceTable() {
     //initializing map from old to new table
-    for (int i=0; i < matrix[0].size(); i++) {
+    for (int i = 0; i < matrix[0].size(); i++) {
         reducedToOriginal.push_back(i);
     }
 
@@ -23,11 +23,11 @@ void Table::reduceTable() {
                 for (int k = 0; k < matrix.size(); k++) {
                     matrix[k].erase(matrix[k].begin() + i);
                 }
-                equivalentColumns[reducedToOriginal[i]]=std::vector<int>(0,0);
-                for (int l=i;l < matrix[0].size() ; l++) {
+                equivalentColumns[reducedToOriginal[i]] = std::vector<int>(0, 0);
+                for (int l = i; l < matrix[0].size(); l++) {
                     reducedToOriginal[l]++;
                 }
-                 reducedToOriginal.pop_back();
+                reducedToOriginal.pop_back();
                 i--;
             }
         }
@@ -41,8 +41,8 @@ void Table::reduceTable() {
                 for (int k = 0; k < matrix.size(); k++) {
                     matrix[k].erase(matrix[k].begin() + j);
                 }
-                equivalentColumns[reducedToOriginal[j]]=std::vector<int>(1,reducedToOriginal[i]);
-                for (int l=j;l < matrix[0].size() ; l++) {
+                equivalentColumns[reducedToOriginal[j]] = std::vector<int>(1, reducedToOriginal[i]);
+                for (int l = j; l < matrix[0].size(); l++) {
                     reducedToOriginal[l]++;
                 }
                 reducedToOriginal.pop_back();
@@ -82,13 +82,13 @@ void Table::reduceTable() {
             for (int k = 0; k < matrix.size(); k++) {
                 matrix[k].erase(matrix[k].begin() + i);
             }
-            equivalentColumns[reducedToOriginal[i]]=std::vector<int>();
-            for (int l=0; l<closure.size(); l++) {
-                if (closure[l]==1) {
+            equivalentColumns[reducedToOriginal[i]] = std::vector<int>();
+            for (int l = 0; l < closure.size(); l++) {
+                if (closure[l] == 1) {
                     equivalentColumns[reducedToOriginal[i]].push_back(reducedToOriginal[l]);
                 }
             }
-            for (int l=i;l < matrix[0].size() ; l++) {
+            for (int l = i; l < matrix[0].size(); l++) {
                 reducedToOriginal[l]++;
             }
             reducedToOriginal.pop_back();
@@ -96,14 +96,14 @@ void Table::reduceTable() {
         }
 
     }
-    for (int i=0; i<reducedToOriginal.size(); i++) {
-        std::cout<<reducedToOriginal[i];
+    for (int i = 0; i < reducedToOriginal.size(); i++) {
+        std::cout << reducedToOriginal[i];
     }
     std::cout << '\n';
-    for (std::map<int,std::vector<int> >::iterator it=equivalentColumns.begin(); it!=equivalentColumns.end(); ++it){
+    for (std::map<int, std::vector<int> >::iterator it = equivalentColumns.begin(); it != equivalentColumns.end(); ++it) {
         std::cout << it->first << " => ";
-        for (int i=0; i<it->second.size();i++) {
-           std::cout << it->second[i];
+        for (int i = 0; i < it->second.size(); i++) {
+            std::cout << it->second[i];
         }
         std::cout << '\n';
     }
@@ -212,20 +212,19 @@ int Table::compareRows(int row1, int row2) {
 
 void Table::createUpandDownArrows() {
     //up arrows
- //   int d=0;
+    //   int d=0;
     for (int i = 0; i < matrix[0].size(); i++) {
         for (int j = 0; j < matrix.size(); j++) {
             if (matrix[j][i] != '1') {
                 for (int k = 0; k < matrix.size(); k++) {
-                    if (matrix[k][i] != '1')
-                    {
-   //                     d++;
-                        if (rowComparisonTable[j][k] == -1 ) {
+                    if (matrix[k][i] != '1') {
+                        //                     d++;
+                        if (rowComparisonTable[j][k] == -1) {
                             break;
 
                         }
                     }
-                    
+
                     if (k == matrix.size() - 1)matrix[j][i] = 'u';
                 }
             }
@@ -238,16 +237,15 @@ void Table::createUpandDownArrows() {
         for (int j = 0; j < matrix[0].size(); j++) {
             if (matrix[i][j] != '1') {
                 for (int k = 0; k < matrix[0].size(); k++) {
-                    if (matrix[i][k] != '1')
-                    {
- //                       d++;
-                        if (columnComparisonTable[j][k] == -1 ) {
+                    if (matrix[i][k] != '1') {
+                        //                       d++;
+                        if (columnComparisonTable[j][k] == -1) {
                             break;
-                            
+
                         }
 
                     }
-                    
+
                     if (k == matrix[0].size() - 1) {
                         if (matrix[i][j] == 'u') matrix[i][j] = 'b';
                         else matrix[i][j] = 'd';
@@ -258,7 +256,7 @@ void Table::createUpandDownArrows() {
 
     }
 
- //   std::cout<<d;
+    //   std::cout<<d;
 
 };
 
@@ -279,7 +277,7 @@ void Table::createRowComparisonTable() {
     rowComparisonTable = std::vector<std::vector<int> >(numRows, row);
     for (int i = 0; i < numRows; i++) {
         for (int j = 0; j < numRows; j++) {
-           rowComparisonTable[i][j] = compareRows(i, j);
+            rowComparisonTable[i][j] = compareRows(i, j);
         }
     }
 }
@@ -289,7 +287,7 @@ std::vector<int> Table::getxD(int column) {
     for (int i = 0; i < matrix.size(); i++) {
         if (matrix[i][column] == 'u' || matrix[i][column] == 'b') {
             for (int j = 0; j < matrix[0].size(); j++) {
-                if ( j != column&& (matrix[i][j] == 'd' || matrix[i][j] == 'b'))xD.push_back(j);
+                if (j != column && (matrix[i][j] == 'd' || matrix[i][j] == 'b'))xD.push_back(j);
             }
         }
     }
@@ -373,6 +371,44 @@ std::vector< std::vector<int> > Table::getComplementedFamilies(int column) {
     return families;
 }
 
+//Writes the complemented families for a particular column to a table to a file, to be read by the HDA program)
+void Table::writeComplementedFamilies(std::vector< std::vector<int> > families) {
+    std::ofstream myfile;
+    myfile.open("families.dat");
+    std::cout << "there are " << families.size() << " families";
+    for (int i = 0; i < families.size(); i++) {
+        std::vector<int> family = families[i];
+        std::cout << "family " << i << "is " << family.size() << " long" ;
+        for (int j; j < family.size(); j++) {
+            myfile << family[j] << " ";
+        }
+        myfile << "\n";
+    }
+    myfile.close();
+}
+
+//reads the dual from the output file, turns it into a set of implications for that column
+std::vector<Implication> Table::readDualToImplication(int column) {
+    std::ifstream in_stream;
+    std::string line;
+    std::vector<int> lhs = std::vector<int>();
+    lhs.push_back(column);
+    std::vector<Implication> implications = std::vector<Implication>();
+    in_stream.open("dual.dat");
+    while (!in_stream.eof()) {
+        in_stream >> line;
+        std::vector<int> hittingSet = std::vector<int>();
+        for (int i = 0; i < line.length(); i++) {
+            hittingSet.push_back(line[i]);
+        }
+        Implication implication = Implication(hittingSet, lhs);
+        implications.push_back(implication);
+    }
+    in_stream.close();
+    
+    return implications;
+}
+
 std::vector<Implication> Table::getNonBinaryBasis(int column) {
     std::vector<Implication> implications = std::vector<Implication>();
     // std::vector<int> xD=getxD(column);
@@ -380,6 +416,11 @@ std::vector<Implication> Table::getNonBinaryBasis(int column) {
     std::vector< std::vector<int> > families = getComplementedFamilies(column);
     // std::vector<int> families=getFamilies(xD,getMx(column));
     // now we need to run hypergraph dualization
+    //Note: the following code is temporary, while we don't have access to call the function directly
+    writeComplementedFamilies(families);
+    system("shd 09 families.dat dual.dat");
+    implications = readDualToImplication(column);
+    //end of temporary
     return implications;
 }
 
@@ -392,7 +433,7 @@ std::vector<Implication> Table::getFullNonBinaryBasis() {
     return allnonbinaryImplications;
 }
 
-//if column b->a, that means that b has more ones than a, or b < a = a > b.
+//if column b->a, that means that b has more ones than a, or b < a (= a > b).
 
 std::vector<Implication> Table::getBinaryBasis(int column) {
     std::vector<Implication> implications = std::vector<Implication>();
