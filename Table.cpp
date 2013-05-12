@@ -329,6 +329,16 @@ std::vector<int> Table::getMx(int column) {
     }
 
 }*/
+void printFamilies(std::vector<std::vector<int> >  families) {
+    int numRows = families.size();  
+    for (int i = 0; i < numRows; i++) {
+        int numColumns = families[i].size();
+        for (int j = 0; j < numColumns; j++) {
+            printf("%3d", families[i][j]);
+        }
+        std::cout << "\n";
+    }
+}
 
 std::vector< std::vector<int> > Table::getComplementedFamilies(int column) {
     std::vector<int> Mx = getMx(column);
@@ -368,6 +378,7 @@ std::vector< std::vector<int> > Table::getComplementedFamilies(int column) {
               }
           }
        }*/
+    //printFamilies(families);
     return families;
 }
 
@@ -375,11 +386,9 @@ std::vector< std::vector<int> > Table::getComplementedFamilies(int column) {
 void Table::writeComplementedFamilies(std::vector< std::vector<int> > families) {
     std::ofstream myfile;
     myfile.open("families.dat");
-    std::cout << "there are " << families.size() << " families";
     for (int i = 0; i < families.size(); i++) {
         std::vector<int> family = families[i];
-        std::cout << "family " << i << "is " << family.size() << " long" ;
-        for (int j; j < family.size(); j++) {
+        for (int j = 0; j < family.size(); j++) {
             myfile << family[j] << " ";
         }
         myfile << "\n";
@@ -391,8 +400,8 @@ void Table::writeComplementedFamilies(std::vector< std::vector<int> > families) 
 std::vector<Implication> Table::readDualToImplication(int column) {
     std::ifstream in_stream;
     std::string line;
-    std::vector<int> lhs = std::vector<int>();
-    lhs.push_back(column);
+    std::vector<int> rhs = std::vector<int>();
+    rhs.push_back(column);
     std::vector<Implication> implications = std::vector<Implication>();
     in_stream.open("dual.dat");
     while (!in_stream.eof()) {
@@ -401,7 +410,7 @@ std::vector<Implication> Table::readDualToImplication(int column) {
         for (int i = 0; i < line.length(); i++) {
             hittingSet.push_back(line[i]);
         }
-        Implication implication = Implication(hittingSet, lhs);
+        Implication implication = Implication(hittingSet, rhs);
         implications.push_back(implication);
     }
     in_stream.close();
@@ -467,3 +476,4 @@ void printImplications(std::vector<Implication> implications) {
         std::cout << implications[i].toString() << "\n";
     }
 }
+

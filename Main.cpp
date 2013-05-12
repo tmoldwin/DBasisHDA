@@ -119,7 +119,7 @@ void testGetNonBinaryBasis() {
         printImplications(implications);
     }
      */
-    std::cout << "nonbinary basis for" << 1;
+    std::cout << "nonbinary basis for column" << 1 << "\n";
     std::vector<Implication> implications = test.getNonBinaryBasis(1);
     printImplications(implications);
     delete m;
