@@ -17,7 +17,7 @@ std::string Implication::toString() {
 		ss << leftHandSide[i] << " ";
 	}
 	ss << ("-> ");
-	for (unsigned int i = 0; i < leftHandSide.size(); i++) {
+	for (unsigned int i = 0; i < rightHandSide.size(); i++) {
 		ss << rightHandSide[i] << " ";
 	}
 	return ss.str();
