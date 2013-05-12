@@ -450,7 +450,7 @@ std::vector<Implication> Table::getNonBinaryBasis(int column) {
     // now we need to run hypergraph dualization
     //Note: the following code is temporary, while we don't have access to call the function directly
     writeComplementedFamilies(families);
-    system("shd 09 families.dat dual.dat");
+    system("./shd 09 families.dat dual.dat");
     implications = readDualToImplication(column);
     //end of temporary
     return implications;
