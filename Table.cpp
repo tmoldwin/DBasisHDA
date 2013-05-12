@@ -163,7 +163,7 @@ void Table::reduceTable() {
 
     }
 
-
+    
 };
 
 int Table::compareColumns(int column1, int column2) {
