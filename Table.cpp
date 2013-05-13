@@ -211,8 +211,6 @@ int Table::compareRows(int row1, int row2) {
 };
 
 void Table::createUpandDownArrows() {
-    //up arrows
-    //   int d=0;
     for (int i = 0; i < matrix[0].size(); i++) {
         for (int j = 0; j < matrix.size(); j++) {
             if (matrix[j][i] != '1') {
@@ -238,7 +236,6 @@ void Table::createUpandDownArrows() {
             if (matrix[i][j] != '1') {
                 for (int k = 0; k < matrix[0].size(); k++) {
                     if (matrix[i][k] != '1') {
-                        //                       d++;
                         if (columnComparisonTable[j][k] == 1) {
                             break;
 
@@ -255,8 +252,6 @@ void Table::createUpandDownArrows() {
         }
 
     }
-
-    //   std::cout<<d;
 
 };
 
@@ -290,7 +285,6 @@ std::vector<int> Table::getxD(int column) {
                 if (j != column && (matrix[i][j] == 'd' || matrix[i][j] == 'b')) {
                     if (xD.size() == 0) {
                         xD.push_back(j);
-                        std::cout<<column<<" "<<j<<"\n";
                     } else {
                         for (unsigned int k = 0; k < xD.size(); k++)// making sure not to add duplicates
                         {
@@ -299,8 +293,6 @@ std::vector<int> Table::getxD(int column) {
                             }
                             if (k == (xD.size() - 1)) {
                                 xD.push_back(j);
-                                std::cout<<column<<" "<<j<<"\n";
-
                                 break;
                             }
 
@@ -318,36 +310,13 @@ std::vector<int> Table::getMx(int column) {
     std::vector<int> Mx;
     for (int i = 0; i < matrix.size(); i++) {
         if (matrix[i][column] == 'u' || matrix[i][column] == 'b')Mx.push_back(i);
-        /* not needed  if (matrix[i][column]!=1) {
-              for (unsigned int j=0; j<Mx.size(); j++) {
-                  if (compareRows(i,Mx[j])==1) {
-                      Mx.erase(Mx.begin()+j);
-                      Mx.push_back(i);
-                      break;
-                  }
-                  if (compareRows(i,Mx[j])==-1) {
-                      break;
-                  }
-                  if (j==Mx.size()-1) {
-                      Mx.push_back(i);
-                  }
-              }
-          }*/
+
     }
     return Mx;
 
 }//returns Mx for a particular column
 
-/*ended up using different architecture
- std::vector<int> Table::getFamilies (std::vector<int> xD,std::vector<int> Mx){
-    std::vector<std::vector<int> > families(Mx.size());
-    for (int i=0; i<Mx.size(); i++) {
-        for (int j=0; j<xD.size(); j++) {
-            
-        }
-    }
 
-}*/
 //prints families to the screen. For debugging only
 
 void printFamilies(std::vector<std::vector<int> > families) {
@@ -380,30 +349,12 @@ std::vector< std::vector<int> > Table::getComplementedFamilies(int column) {
             families.push_back(temporary);
 
         }
-        for (unsigned int k = 0; k < temporary.size(); k++) {
+      /*  for (unsigned int k = 0; k < temporary.size(); k++) {
             std::cout << column << " " << i << " " << Mx[i] << " " << temporary[k] << "\n";
 
-        }
+        } for debugging*/
     }
-    /* incorrect assumption  for (int i=0; i<matrix.size(); i++) {
-          if (matrix[i][column]=='u'||matrix[i][column]=='b')
-          {
-              bool k=false;
-              for (int j=0; j<matrix[0].size(); j++) {
-                  if((matrix[i][j]=='d'||matrix[i][j]=='b')&&j!=column)
-                  {
-                      if (k==false) {
-                          k=true;
-                       
-                          families.push_back(std::vector<int>(1,j));
-                      }
-                      else families[families.size()-1].push_back(j);
-                      std::cout<<column<<" "<<families.size()-1<<" "<<i<<" "<<j<<"\n";
-                  }
-              }
-          }
-       }*/
-    //printFamilies(families);
+
     return families;
 }
 
@@ -451,15 +402,14 @@ std::vector<Implication> Table::readDualToImplication(int column) {
 
 std::vector<Implication> Table::getNonBinaryBasis(int column) {
     std::vector<Implication> implications = std::vector<Implication>();
-    // std::vector<int> xD=getxD(column);
-    // getMx(column);
     std::vector< std::vector<int> > families = getComplementedFamilies(column);
-    // std::vector<int> families=getFamilies(xD,getMx(column));
     // now we need to run hypergraph dualization
     //Note: the following code is temporary, while we don't have access to call the function directly
-    writeComplementedFamilies(families);
-    system("./shd 09 families.dat dual.dat");
-    implications = readDualToImplication(column);
+    if (families.size()!=0) {
+        writeComplementedFamilies(families);
+        system("./shd 09 families.dat dual.dat");
+        implications = readDualToImplication(column);
+    }
     //end of temporary
     return implications;
 }
