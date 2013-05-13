@@ -470,13 +470,12 @@ std::vector<Implication> Table::getFullNonBinaryBasis() {
     return allnonbinaryImplications;
 }
 
-//if column b->a, that means that b has more ones than a, or b < a (= a > b).
-
+//if column b->a, that means that b has fewer ones than a, or a < b.
 std::vector<Implication> Table::getBinaryBasis(int column) {
     std::vector<Implication> implications = std::vector<Implication>();
     int numColumns = columnComparisonTable.size();
     for (int i = 0; i < numColumns; i++) {
-        if (columnComparisonTable[column][i] == 1) {
+        if (columnComparisonTable[column][i] == -1) {
             std::vector<int> rhs = std::vector<int>();
             rhs.push_back(column);
             std::vector<int> lhs = std::vector<int>();
