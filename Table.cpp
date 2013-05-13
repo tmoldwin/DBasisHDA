@@ -239,7 +239,7 @@ void Table::createUpandDownArrows() {
                 for (int k = 0; k < matrix[0].size(); k++) {
                     if (matrix[i][k] != '1') {
                         //                       d++;
-                        if (columnComparisonTable[j][k] == -1) {
+                        if (columnComparisonTable[j][k] == 1) {
                             break;
 
                         }
@@ -290,6 +290,7 @@ std::vector<int> Table::getxD(int column) {
                 if (j != column && (matrix[i][j] == 'd' || matrix[i][j] == 'b')) {
                     if (xD.size() == 0) {
                         xD.push_back(j);
+                        std::cout<<column<<" "<<j<<"\n";
                     } else {
                         for (unsigned int k = 0; k < xD.size(); k++)// making sure not to add duplicates
                         {
@@ -298,6 +299,8 @@ std::vector<int> Table::getxD(int column) {
                             }
                             if (k == (xD.size() - 1)) {
                                 xD.push_back(j);
+                                std::cout<<column<<" "<<j<<"\n";
+
                                 break;
                             }
 
@@ -455,7 +458,7 @@ std::vector<Implication> Table::getNonBinaryBasis(int column) {
     // now we need to run hypergraph dualization
     //Note: the following code is temporary, while we don't have access to call the function directly
     writeComplementedFamilies(families);
-    system(".\\shd 09 families.dat dual.dat");
+    system("./shd 09 families.dat dual.dat");
     implications = readDualToImplication(column);
     //end of temporary
     return implications;
