@@ -216,7 +216,6 @@ void Table::createUpandDownArrows() {
             if (matrix[j][i] != '1') {
                 for (int k = 0; k < matrix.size(); k++) {
                     if (matrix[k][i] != '1') {
-                        //                     d++;
                         if (rowComparisonTable[j][k] == -1) {
                             break;
 
