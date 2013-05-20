@@ -33,7 +33,8 @@ private:
     std::vector<Implication> completeImplications;
     std::vector<int> reducedToOriginal;
     std::map<int, std::vector<int> > equivalentColumns;
-
+    std::vector<std::vector<int> > blacklistedHittingSets;//lhss with too small supports
+    int minSup;//user parameter for minimal support for lhs of implications
     int compareColumns(int column1, int column2); //more ones is smaller column; column numbering starts from 0
     int compareRows(int row1, int row2); // more ones is larger row; row numbering starts from 0
     void reduceTable();
@@ -48,8 +49,10 @@ public:
         createRowComparisonTable();
         createColumnComparisonTable();
         createUpandDownArrows();
+        minSup=1;
 
     };
+    void setminSup(int min){minSup=min;};
 
     std::vector<Implication> FindSBasis() {
         completeImplications = getFullBinaryBasis();
@@ -87,6 +90,9 @@ public:
     std::vector<std::vector<int> > getRowComparisonTable() {
         return rowComparisonTable;
     };
+    void prettyprintImplications(std::vector<Implication> implications);//returns implications starting from 1 using the original table
+
 };
-void printImplications(std::vector<Implication> implications);
+void printImplications(std::vector<Implication> implications);//returns implications starting from 0 using reduced table
+
 #endif /* defined(____Table__) */

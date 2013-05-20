@@ -96,12 +96,15 @@ void Table::reduceTable() {
         }
 
     }
+    std::cout << "Equivalent columns for reduced table in original table starting from 0\n";
     for (int i = 0; i < reducedToOriginal.size(); i++) {
         std::cout << reducedToOriginal[i];
     }
     std::cout << '\n';
+    std::cout <<  " Equivalent columns in original table starting from 0, blank means null set ";
+    std::cout << '\n';
     for (std::map<int, std::vector<int> >::iterator it = equivalentColumns.begin(); it != equivalentColumns.end(); ++it) {
-        std::cout << it->first << " => ";
+        std::cout << it->first << "<=> ";
         for (int i = 0; i < it->second.size(); i++) {
             std::cout << it->second[i];
         }
@@ -389,10 +392,44 @@ std::vector<Implication> Table::readDualToImplication(int column) {
         while (lineStream >> num) {
             hittingSet.push_back(num);
         }
-        std::vector<int> rhs = std::vector<int>();
-        rhs.push_back(column);
-        Implication implication = Implication(hittingSet, rhs);
-        implications.push_back(implication);
+        //following loop removes lhss with too small supports
+        int sup=0;
+        bool blacklist=false;
+        for (int i=0; i<blacklistedHittingSets.size(); i++) {
+            if (hittingSet==blacklistedHittingSets[i])//does not get all duplicates because the order could be different
+            {
+                blacklist=true;
+
+            }
+        }
+        if (blacklist==false) {
+            for (unsigned int i=0; i<matrix.size(); i++) {
+                for (unsigned int j=0; j<hittingSet.size(); j++) {
+                    if (matrix[i][hittingSet[j]]!='1') {
+                        break;
+                    }
+                    if (j==hittingSet.size()-1) {
+                        sup++;
+                    }
+                }
+                if (sup>=minSup) {
+                    std::vector<int> rhs = std::vector<int>();
+                    rhs.push_back(column);
+                    Implication implication = Implication(hittingSet, rhs);
+                    implications.push_back(implication);
+                    break;
+                }
+                if (i==matrix.size()-1) {
+                    blacklistedHittingSets.push_back(hittingSet);
+                    for (unsigned int k=0; k<hittingSet.size(); k++) {
+                        std::cout<<reducedToOriginal[hittingSet[k]]+1<<" ";//in original table starting from zero
+                    }
+                    std::cout<<"too small support = "<<sup<<"\n";
+                }
+            }
+        }
+
+
     }
     in_stream.close();
 
@@ -453,5 +490,19 @@ void printImplications(std::vector<Implication> implications) {
     for (int i = 0; i < implications.size(); i++) {
         std::cout << implications[i].toString() << "\n";
     }
+}
+    void Table::prettyprintImplications(std::vector<Implication> implications) {
+        for (int i = 0; i < implications.size(); i++) {
+            std::vector<int> lhs=implications[i].getlhs();
+            for (unsigned int j=0; j<lhs.size(); j++) {
+                std::cout << reducedToOriginal[lhs[j]]+1<<" ";
+            }
+            std::cout<< ("-> ");
+            std::vector<int> rhs=implications[i].getrhs();
+            for (unsigned int j=0; j<rhs.size(); j++) {
+                std::cout << reducedToOriginal[rhs[j]]+1<<" ";
+            }
+            std::cout<< "\n";
+        }
 }
 

@@ -150,11 +150,13 @@ void testWriteComplementedFamilies() {
 }
 
 void testGetFullSBasis() {
-    std::vector<std::vector<char> > * m = readTable("table1.txt");
+    std::vector<std::vector<char> > * m = readTable("largetestcase.txt");
     std::vector<std::vector<char> > matrix = *m;
     Table test(matrix);
     std::vector<Implication> implications = test.FindSBasis();
     printImplications(implications);
+    std::cout<<"original table\n";
+    test.prettyprintImplications(implications);
     delete m;
 }
 

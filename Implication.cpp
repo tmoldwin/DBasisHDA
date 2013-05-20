@@ -22,6 +22,8 @@ std::string Implication::toString() {
 	}
 	return ss.str();
 }
+std::vector<int> Implication::getrhs(){return rightHandSide;}
+std::vector<int> Implication::getlhs(){return leftHandSide;}
 
 void testImplication() {
 	std::vector<int>  v1 =  std::vector<int>();

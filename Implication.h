@@ -16,6 +16,8 @@ private:
 public:
 	Implication(std::vector<int>  lhs, std::vector<int>  rhs);
 	std::string toString();
+    std::vector<int> getlhs();
+    std::vector<int> getrhs();
 };
 
 void testImplication();
