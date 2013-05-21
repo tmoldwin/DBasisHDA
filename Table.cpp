@@ -101,12 +101,12 @@ void Table::reduceTable() {
         std::cout << reducedToOriginal[i];
     }
     std::cout << '\n';
-    std::cout <<  " Equivalent columns in original table starting from 0, blank means null set ";
+    std::cout << " Equivalent columns in original table starting from 0, blank means null set ";
     std::cout << '\n';
     for (std::map<int, std::vector<int> >::iterator it = equivalentColumns.begin(); it != equivalentColumns.end(); ++it) {
         std::cout << it->first << "<=> ";
         for (int i = 0; i < it->second.size(); i++) {
-            std::cout << it->second[i];
+            std::cout << it->second[i] << " ";
         }
         std::cout << '\n';
     }
@@ -351,10 +351,10 @@ std::vector< std::vector<int> > Table::getComplementedFamilies(int column) {
             families.push_back(temporary);
 
         }
-      /*  for (unsigned int k = 0; k < temporary.size(); k++) {
-            std::cout << column << " " << i << " " << Mx[i] << " " << temporary[k] << "\n";
+        /*  for (unsigned int k = 0; k < temporary.size(); k++) {
+              std::cout << column << " " << i << " " << Mx[i] << " " << temporary[k] << "\n";
 
-        } for debugging*/
+          } for debugging*/
     }
 
     return families;
@@ -393,38 +393,38 @@ std::vector<Implication> Table::readDualToImplication(int column) {
             hittingSet.push_back(num);
         }
         //following loop removes lhss with too small supports
-        int sup=0;
-        bool blacklist=false;
-        for (int i=0; i<blacklistedHittingSets.size(); i++) {
-            if (hittingSet==blacklistedHittingSets[i])//does not get all duplicates because the order could be different
+        int sup = 0;
+        bool blacklist = false;
+        for (int i = 0; i < blacklistedHittingSets.size(); i++) {
+            if (hittingSet == blacklistedHittingSets[i])//does not get all duplicates because the order could be different
             {
-                blacklist=true;
+                blacklist = true;
 
             }
         }
-        if (blacklist==false) {
-            for (unsigned int i=0; i<matrix.size(); i++) {
-                for (unsigned int j=0; j<hittingSet.size(); j++) {
-                    if (matrix[i][hittingSet[j]]!='1') {
+        if (blacklist == false) {
+            for (unsigned int i = 0; i < matrix.size(); i++) {
+                for (unsigned int j = 0; j < hittingSet.size(); j++) {
+                    if (matrix[i][hittingSet[j]] != '1') {
                         break;
                     }
-                    if (j==hittingSet.size()-1) {
+                    if (j == hittingSet.size() - 1) {
                         sup++;
                     }
                 }
-                if (sup>=minSup) {
+                if (sup >= minSup) {
                     std::vector<int> rhs = std::vector<int>();
                     rhs.push_back(column);
                     Implication implication = Implication(hittingSet, rhs);
                     implications.push_back(implication);
                     break;
                 }
-                if (i==matrix.size()-1) {
+                if (i == matrix.size() - 1) {
                     blacklistedHittingSets.push_back(hittingSet);
-                    for (unsigned int k=0; k<hittingSet.size(); k++) {
-                        std::cout<<reducedToOriginal[hittingSet[k]]+1<<" ";//in original table starting from zero
+                    for (unsigned int k = 0; k < hittingSet.size(); k++) {
+                        std::cout << reducedToOriginal[hittingSet[k]] + 1 << " "; //in original table starting from zero
                     }
-                    std::cout<<"too small support = "<<sup<<"\n";
+                    std::cout << "too small support = " << sup << "\n";
                 }
             }
         }
@@ -441,7 +441,7 @@ std::vector<Implication> Table::getNonBinaryBasis(int column) {
     std::vector< std::vector<int> > families = getComplementedFamilies(column);
     // now we need to run hypergraph dualization
     //Note: the following code is temporary, while we don't have access to call the function directly
-    if (families.size()!=0) {
+    if (families.size() != 0) {
         writeComplementedFamilies(families);
         system("./shd 09 families.dat dual.dat");
         implications = readDualToImplication(column);
@@ -464,56 +464,55 @@ std::vector<Implication> Table::getDNonBinaryBasis(int column) {
     std::vector< std::vector<int> > families = getComplementedFamilies(column);
     // now we need to run hypergraph dualization
     //Note: the following code is temporary, while we don't have access to call the function directly
-    if (families.size()!=0) {
+    if (families.size() != 0) {
         writeComplementedFamilies(families);
-        system("./shd 09 families.dat dual.dat");
+        system("shd 09 families.dat dual.dat");
         implications = readDualToImplication(column);
-        for(unsigned int i=0;i<implications.size();i++)// removes lhs that are not << minimal
+        for (unsigned int i = 0; i < implications.size(); i++)// removes lhs that are not << minimal
         {
-            std::vector<int>cover1=implications[i].getlhs();
-            for (unsigned int j=0; j<implications.size(); j++) {
-                if(i!=j){
-               std::vector<int> cover2=implications[j].getlhs();
-                bool a=true;
-               for (unsigned int k=0; k<cover1.size(); k++) {
-                   bool b=false;
-                    for (unsigned int l=0; l<cover2.size(); l++) {
+            std::vector<int>cover1 = implications[i].getlhs();
+            for (unsigned int j = 0; j < implications.size(); j++) {
+                if (i != j) {
+                    std::vector<int> cover2 = implications[j].getlhs();
+                    bool a = true;
+                    for (unsigned int k = 0; k < cover1.size(); k++) {
+                        bool b = false;
+                        for (unsigned int l = 0; l < cover2.size(); l++) {
 
-                        if( (cover1[k]==cover2[l])||columnComparisonTable[cover1[k]][cover2[l]]==1){
-                       /*    if(cover1[k]!=cover2[l]){
-                            std::cout<<cover2[l]<<"is implied by"<<cover1[k]<<" ";
-                            }*/
-                            b=true;
+                            if ((cover1[k] == cover2[l]) || columnComparisonTable[cover1[k]][cover2[l]] == 1) {
+                                /*    if(cover1[k]!=cover2[l]){
+                                     std::cout<<cover2[l]<<"is implied by"<<cover1[k]<<" ";
+                                     }*/
+                                b = true;
+                                break;
+                            }
+                        }
+                        if (b == false) {
+                            a = false;
                             break;
                         }
+
                     }
-                   if (b==false) {
-                       a=false;
-                       break;
-                   }
-                   
-               }
-                if (a==true)
-                {
-                    diffsbasisdbasis++;
-                    for (unsigned int n=0; n<cover2.size(); n++) {
-                        std::cout<<reducedToOriginal[cover2[n]]+1<<" ";
-                        
+                    if (a == true) {
+                        diffsbasisdbasis++;
+                        for (unsigned int n = 0; n < cover2.size(); n++) {
+                            std::cout << reducedToOriginal[cover2[n]] + 1 << " ";
+
+                        }
+                        std::cout << "<< reduces ";
+                        for (unsigned int m = 0; m < cover1.size(); m++) {
+                            std::cout << reducedToOriginal[cover1[m]] + 1 << " ";
+
+                        }
+                        std::cout << "for column " << reducedToOriginal[column] + 1 << "\n";
+                        implications.erase(implications.begin() + i);
+                        i--;
+                        break;
                     }
-                    std::cout<<"<< reduces ";
-                    for (unsigned int m=0; m<cover1.size(); m++) {
-                        std::cout<<reducedToOriginal[cover1[m]]+1<<" ";
-                        
-                    }
-                    std::cout<<"for column"<<reducedToOriginal[column]+1<<"\n";
-                    implications.erase(implications.begin()+i);
-                    i--;
-                    break;
-                }
 
                 }
             }
-           
+
         }
     }
     //end of temporary
@@ -526,12 +525,13 @@ std::vector<Implication> Table::getDFullNonBinaryBasis() {
         std::vector<Implication> nonbinarybasisi = getDNonBinaryBasis(i);
         allnonbinaryImplications.insert(allnonbinaryImplications.end(), nonbinarybasisi.begin(), nonbinarybasisi.end());
     }
-    std::cout<<"diff s d"<<diffsbasisdbasis<<"\n";
+    std::cout << "diff s d" << diffsbasisdbasis << "\n";
     return allnonbinaryImplications;
 }
 
 
 //if column b->a, that means that b has fewer ones than a, or a < b.
+
 std::vector<Implication> Table::getBinaryBasis(int column) {
     std::vector<Implication> implications = std::vector<Implication>();
     int numColumns = columnComparisonTable.size();
@@ -563,19 +563,28 @@ void printImplications(std::vector<Implication> implications) {
         std::cout << implications[i].toString() << "\n";
     }
 }
-    void Table::prettyprintImplications(std::vector<Implication> implications) {
-        for (int i = 0; i < implications.size(); i++) {
-            std::vector<int> lhs=implications[i].getlhs();
-            std::cout <<i<<". ";
-            for (unsigned int j=0; j<lhs.size(); j++) {
-                std::cout << reducedToOriginal[lhs[j]]+1<<" ";
-            }
-            std::cout<< ("-> ");
-            std::vector<int> rhs=implications[i].getrhs();
-            for (unsigned int j=0; j<rhs.size(); j++) {
-                std::cout << reducedToOriginal[rhs[j]]+1<<" ";
-            }
-            std::cout<< "\n";
+
+void Table::writeOutput(std::string outputFileName){
+    
+}
+
+Implication Table::mapImplication (Implication implication){
+    //ToDo
+}
+
+void Table::prettyprintImplications(std::vector<Implication> implications) {
+    for (int i = 0; i < implications.size(); i++) {
+        std::vector<int> lhs = implications[i].getlhs();
+        std::cout << i << ". ";
+        for (unsigned int j = 0; j < lhs.size(); j++) {
+            std::cout << reducedToOriginal[lhs[j]] + 1 << " ";
         }
+        std::cout << ("-> ");
+        std::vector<int> rhs = implications[i].getrhs();
+        for (unsigned int j = 0; j < rhs.size(); j++) {
+            std::cout << reducedToOriginal[rhs[j]] + 1 << " ";
+        }
+        std::cout << "\n";
+    }
 }
 

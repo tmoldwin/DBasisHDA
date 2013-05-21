@@ -14,7 +14,7 @@
 #include<iostream>
 #include <cstdlib>
 #include "Implication.h"
-#include "SetOperations.h"
+
 #ifndef ____Table__
 #define ____Table__
 
@@ -61,6 +61,7 @@ public:
         completeImplications.insert(completeImplications.end(), nonbinary.begin(), nonbinary.end());
         return completeImplications;
     };
+    
     std::vector<Implication> FindDBasis() {
         completeImplications = getFullBinaryBasis();
         std::vector<Implication> nonbinary = getDFullNonBinaryBasis();
@@ -89,6 +90,11 @@ public:
     std::vector<Implication> getDNonBinaryBasis(int column); //Gets the << reduced D nonbinary basis for a particular column
     
     std::vector<Implication> getDFullNonBinaryBasis(); //Gets the << reduced D nonbinary basis for the entire table
+    
+    Implication mapImplication (Implication implication);
+    //ToDo
+   
+    void writeOutput(std::string outputFileName);
 
 
     std::vector<std::vector<char> > get_matrix() {
