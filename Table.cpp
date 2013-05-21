@@ -459,6 +459,78 @@ std::vector<Implication> Table::getFullNonBinaryBasis() {
     return allnonbinaryImplications;
 }
 
+std::vector<Implication> Table::getDNonBinaryBasis(int column) {
+    std::vector<Implication> implications = std::vector<Implication>();
+    std::vector< std::vector<int> > families = getComplementedFamilies(column);
+    // now we need to run hypergraph dualization
+    //Note: the following code is temporary, while we don't have access to call the function directly
+    if (families.size()!=0) {
+        writeComplementedFamilies(families);
+        system("./shd 09 families.dat dual.dat");
+        implications = readDualToImplication(column);
+        for(unsigned int i=0;i<implications.size();i++)// removes lhs that are not << minimal
+        {
+            std::vector<int>cover1=implications[i].getlhs();
+            for (unsigned int j=0; j<implications.size(); j++) {
+                if(i!=j){
+               std::vector<int> cover2=implications[j].getlhs();
+                bool a=true;
+               for (unsigned int k=0; k<cover1.size(); k++) {
+                   bool b=false;
+                    for (unsigned int l=0; l<cover2.size(); l++) {
+
+                        if( (cover1[k]==cover2[l])||columnComparisonTable[cover1[k]][cover2[l]]==1){
+                       /*    if(cover1[k]!=cover2[l]){
+                            std::cout<<cover2[l]<<"is implied by"<<cover1[k]<<" ";
+                            }*/
+                            b=true;
+                            break;
+                        }
+                    }
+                   if (b==false) {
+                       a=false;
+                       break;
+                   }
+                   
+               }
+                if (a==true)
+                {
+                    diffsbasisdbasis++;
+                    for (unsigned int n=0; n<cover2.size(); n++) {
+                        std::cout<<reducedToOriginal[cover2[n]]+1<<" ";
+                        
+                    }
+                    std::cout<<"<< reduces ";
+                    for (unsigned int m=0; m<cover1.size(); m++) {
+                        std::cout<<reducedToOriginal[cover1[m]]+1<<" ";
+                        
+                    }
+                    std::cout<<"for column"<<reducedToOriginal[column]+1<<"\n";
+                    implications.erase(implications.begin()+i);
+                    i--;
+                    break;
+                }
+
+                }
+            }
+           
+        }
+    }
+    //end of temporary
+    return implications;
+}
+
+std::vector<Implication> Table::getDFullNonBinaryBasis() {
+    std::vector<Implication> allnonbinaryImplications;
+    for (int i = 0; i < matrix[0].size(); i++) {
+        std::vector<Implication> nonbinarybasisi = getDNonBinaryBasis(i);
+        allnonbinaryImplications.insert(allnonbinaryImplications.end(), nonbinarybasisi.begin(), nonbinarybasisi.end());
+    }
+    std::cout<<"diff s d"<<diffsbasisdbasis<<"\n";
+    return allnonbinaryImplications;
+}
+
+
 //if column b->a, that means that b has fewer ones than a, or a < b.
 std::vector<Implication> Table::getBinaryBasis(int column) {
     std::vector<Implication> implications = std::vector<Implication>();
@@ -494,6 +566,7 @@ void printImplications(std::vector<Implication> implications) {
     void Table::prettyprintImplications(std::vector<Implication> implications) {
         for (int i = 0; i < implications.size(); i++) {
             std::vector<int> lhs=implications[i].getlhs();
+            std::cout <<i<<". ";
             for (unsigned int j=0; j<lhs.size(); j++) {
                 std::cout << reducedToOriginal[lhs[j]]+1<<" ";
             }

@@ -159,6 +159,17 @@ void testGetFullSBasis() {
     test.prettyprintImplications(implications);
     delete m;
 }
+void testGetFullDBasis() {
+    std::vector<std::vector<char> > * m = readTable("largetestcase.txt");
+    std::vector<std::vector<char> > matrix = *m;
+    Table test(matrix);
+    std::vector<Implication> implications = test.FindDBasis();
+   // std::vector<Implication> pimplications = test.getDNonBinaryBasis(6);
+   printImplications(implications);
+    std::cout<<"original table\n";
+    test.prettyprintImplications(implications);
+    delete m;
+}
 
 int main(int argc, char **argv) {
     /*    std::cout << "\nTesting readFile()\n";
@@ -182,6 +193,8 @@ int main(int argc, char **argv) {
         std::cout << "\nTesting GetFullNonBinaryBasis\n";
         testGetFullNonBinaryBasis();
      */
-    std::cout << "\nTesting GetSBasis\n";
-    testGetFullSBasis();
+  //  std::cout << "\nTesting GetSBasis\n";
+    //testGetFullSBasis();
+    std::cout << "\nTesting GetdBasis\n";
+    testGetFullDBasis();
 }

@@ -20,6 +20,7 @@
 
 class Table {
 private:
+    int diffsbasisdbasis;
     std::vector<std::vector<char> > matrix;
     std::vector<std::vector<int> > columnComparisonTable; /*an n*n matrix (n is the number of columns in the reduced
                                                            * table) whose rows and columns represent
@@ -35,7 +36,7 @@ private:
     std::map<int, std::vector<int> > equivalentColumns;
     std::vector<std::vector<int> > blacklistedHittingSets;//lhss with too small supports
     int minSup;//user parameter for minimal support for lhs of implications
-    int compareColumns(int column1, int column2); //more ones is smaller column; column numbering starts from 0
+    int compareColumns(int column1, int column2); //more ones is smaller column; column numbering starts from 0;Returns 1 if column1 is greater, -1 if column2  is greater, 0 if equal, -2 if incomparable
     int compareRows(int row1, int row2); // more ones is larger row; row numbering starts from 0
     void reduceTable();
     void createColumnComparisonTable();
@@ -50,13 +51,19 @@ public:
         createColumnComparisonTable();
         createUpandDownArrows();
         minSup=1;
-
+        diffsbasisdbasis=0;
     };
     void setminSup(int min){minSup=min;};
 
     std::vector<Implication> FindSBasis() {
         completeImplications = getFullBinaryBasis();
         std::vector<Implication> nonbinary = getFullNonBinaryBasis();
+        completeImplications.insert(completeImplications.end(), nonbinary.begin(), nonbinary.end());
+        return completeImplications;
+    };
+    std::vector<Implication> FindDBasis() {
+        completeImplications = getFullBinaryBasis();
+        std::vector<Implication> nonbinary = getDFullNonBinaryBasis();
         completeImplications.insert(completeImplications.end(), nonbinary.begin(), nonbinary.end());
         return completeImplications;
     };
@@ -78,6 +85,11 @@ public:
     std::vector<Implication> getNonBinaryBasis(int column); //Gets the nonbinary basis for a particular column
 
     std::vector<Implication> getFullNonBinaryBasis(); //Gets the nonbinary basis for the entire table
+    
+    std::vector<Implication> getDNonBinaryBasis(int column); //Gets the << reduced D nonbinary basis for a particular column
+    
+    std::vector<Implication> getDFullNonBinaryBasis(); //Gets the << reduced D nonbinary basis for the entire table
+
 
     std::vector<std::vector<char> > get_matrix() {
         return matrix;
