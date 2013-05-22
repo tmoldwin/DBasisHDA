@@ -155,23 +155,26 @@ void testGetFullSBasis() {
     Table test(matrix);
     std::vector<Implication> implications = test.FindSBasis();
     printImplications(implications);
-    std::cout<<"original table\n";
+    std::cout << "original table\n";
     test.prettyprintImplications(implications);
     delete m;
 }
+
 void testGetFullDBasis() {
     std::vector<std::vector<char> > * m = readTable("largetestcase.txt");
     std::vector<std::vector<char> > matrix = *m;
     Table test(matrix);
     std::vector<Implication> implications = test.FindDBasis();
-   // std::vector<Implication> pimplications = test.getDNonBinaryBasis(6);
-   printImplications(implications);
-    std::cout<<"original table\n";
+    // std::vector<Implication> pimplications = test.getDNonBinaryBasis(6);
+    printImplications(implications);
+    std::cout << "original table\n";
     test.prettyprintImplications(implications);
     delete m;
 }
 
-int main(int argc, char **argv) {
+
+int main(int argc, char* argv[]) {
+    
     /*    std::cout << "\nTesting readFile()\n";
         testReadFile();
         std::cout << "\nTesting Implication\n";
@@ -192,9 +195,25 @@ int main(int argc, char **argv) {
         testGetNonBinaryBasis();
         std::cout << "\nTesting GetFullNonBinaryBasis\n";
         testGetFullNonBinaryBasis();
+        std::cout << "\nTesting GetSBasis\n";
+        testGetFullSBasis();
+        std::cout << "\nTesting GetdBasis\n";
+        testGetFullDBasis();
      */
-  //  std::cout << "\nTesting GetSBasis\n";
-    //testGetFullSBasis();
-    std::cout << "\nTesting GetdBasis\n";
-    testGetFullDBasis();
+
+    std::string inputFileName = argv[1];
+    if(argc == 3){ //if an output file is given
+        char* outputFileName = argv[2];
+        freopen (outputFileName,"w",stdout);
+    }
+    std::vector<std::vector<char> > * m = readTable(inputFileName);
+    std::vector<std::vector<char> > matrix = *m;
+    Table test(matrix);
+    std::vector<Implication> implications = test.FindDBasis();
+    test.prettyprintImplications(implications);
+    delete m;
+
+    if(argc == 3){
+        fclose (stdout);
+    }
 }

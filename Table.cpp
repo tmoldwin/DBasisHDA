@@ -436,16 +436,54 @@ std::vector<Implication> Table::readDualToImplication(int column) {
     return implications;
 }
 
+char * Table::runShd(std::vector< std::vector<int> > families) {
+    std::vector<int> vector = std::vector<int>();
+    int numFamilies = families.size();
+    for (int i = 0; i < numFamilies; i++) {
+        std::vector<int> family = families[i];
+        int familySize = family.size();
+        for (int j = 0; j < familySize; j++) {
+            vector.push_back(family[j]);
+        }
+        vector.push_back(INTHUGE);
+    }
+    vector.push_back(INTHUGE - 1); //eof
+    int* a = &vector[0];
+    __load_from_memory_org__ = a;
+    EXECSUB(SHD_main, 0, exit, "shd 0 void void", 0);
+    char * buf = __write_to_memory_org__;
+    while (*buf != INTHUGE - 1) {
+        printf("%d\n", *buf);
+        buf++;
+    }
+    std::cout << sizeof(buf);
+    return buf; 
+}
+
+std::vector<Implication> getImplicationsFromDual(int column, char* buffer)
+{
+    int size = sizeof(buffer);
+    std::vector<Implication> implications = std::vector<Implication>();
+    for(int i  = 0; i < size; i++){
+        //TODO
+    }
+}
+
 std::vector<Implication> Table::getNonBinaryBasis(int column) {
+
     std::vector<Implication> implications = std::vector<Implication>();
     std::vector< std::vector<int> > families = getComplementedFamilies(column);
+
     // now we need to run hypergraph dualization
     //Note: the following code is temporary, while we don't have access to call the function directly
     if (families.size() != 0) {
         writeComplementedFamilies(families);
-        system("./shd 09 families.dat dual.dat");
+        //get rid of annoying output stuff
+
+        system("shd _families.dat dual.dat");
         implications = readDualToImplication(column);
     }
+
     //end of temporary
     return implications;
 }
@@ -528,8 +566,6 @@ std::vector<Implication> Table::getDFullNonBinaryBasis() {
     std::cout << "diff s d" << diffsbasisdbasis << "\n";
     return allnonbinaryImplications;
 }
-
-
 //if column b->a, that means that b has fewer ones than a, or a < b.
 
 std::vector<Implication> Table::getBinaryBasis(int column) {
@@ -564,11 +600,11 @@ void printImplications(std::vector<Implication> implications) {
     }
 }
 
-void Table::writeOutput(std::string outputFileName){
-    
+void Table::writeOutput(std::string outputFileName) {
+    //TODO (This would be instead of using cout)
 }
 
-Implication Table::mapImplication (Implication implication){
+Implication Table::mapImplication(Implication implication) {
     //ToDo
 }
 

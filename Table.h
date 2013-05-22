@@ -5,6 +5,7 @@
 //  Created by Joshua A Blumenkopf on 4/16/13.
 //
 //
+#define _FILE2_LOAD_FROM_MEMORY_
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -13,7 +14,10 @@
 #include <map>
 #include<iostream>
 #include <cstdlib>
+#include "shd31New/shd.h"
 #include "Implication.h"
+
+
 
 #ifndef ____Table__
 #define ____Table__
@@ -78,7 +82,11 @@ public:
     std::vector<int> getMx(int column); //returns Mx for a particular column
 
     std::vector<std::vector<int> >getComplementedFamilies(int column);
-
+    
+    char* runShd(std::vector< std::vector<int> > families);
+    
+    std::vector<Implication> getImplicationsFromDual(int column, char* buffer);
+    
     void writeComplementedFamilies(std::vector< std::vector<int> > families);
 
     std::vector<Implication> readDualToImplication(int column);
