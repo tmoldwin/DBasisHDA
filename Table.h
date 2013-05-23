@@ -13,7 +13,7 @@
 #include <vector>
 #include <map>
 #include <cstdlib>
-#include "shd31New/shd.h"
+//#include "shd31New/shd.c"
 #include "Implication.h"
 
 
@@ -84,7 +84,7 @@ public:
     
     char* runShd(std::vector< std::vector<int> > families);
     
-    std::vector<Implication> getImplicationsFromDual(int column, char* buffer);
+    std::vector<Implication> getImplicationsFromDual(char* buffer, int column);
     
     void writeComplementedFamilies(std::vector< std::vector<int> > families);
 

@@ -435,7 +435,7 @@ std::vector<Implication> Table::readDualToImplication(int column) {
 
     return implications;
 }
-
+/* 
 char * Table::runShd(std::vector< std::vector<int> > families) {
     std::vector<int> vector = std::vector<int>();
     int numFamilies = families.size();
@@ -447,7 +447,7 @@ char * Table::runShd(std::vector< std::vector<int> > families) {
         }
         vector.push_back(INTHUGE);
     }
-    vector.push_back(INTHUGE - 1); //eof
+    vector[vector.size() - 1] = INTHUGE - 1; //eof
     int* a = &vector[0];
     __load_from_memory_org__ = a;
     EXECSUB(SHD_main, 0, exit, "shd 0 void void", 0);
@@ -456,32 +456,50 @@ char * Table::runShd(std::vector< std::vector<int> > families) {
         printf("%d\n", *buf);
         buf++;
     }
-    std::cout << sizeof(buf);
-    return buf; 
+    std::cout << sizeof (buf);
+    return buf;
 }
 
-std::vector<Implication> getImplicationsFromDual(int column, char* buffer)
-{
-    int size = sizeof(buffer);
+std::vector<Implication> getImplicationsFromDual(int column, char* buffer) {
     std::vector<Implication> implications = std::vector<Implication>();
-    for(int i  = 0; i < size; i++){
-        //TODO
+    std::vector<std::vector<int> > dual = std::vector<std::vector<int> >();
+    int number;
+    std::vector<int> line = std::vector<int>();
+    int i = 0;
+    while (number != INTHUGE - 1) { //While we haven't reached eof
+        if (number == INTHUGE) { //if we're at a newline demarcation
+            std::cout << "\n"; //for testing only
+            dual.push_back(line); //store the current line in the dual
+            line = std::vector<int>(); //line is a new vector
+        } else { //in the middle of a line
+            line.push_back(number); //add the number to the line
+            std::cout << number; //for testing only
+        }
+        number = buffer[i];
+        i++;
     }
+    return implications;
 }
-
+*/
 std::vector<Implication> Table::getNonBinaryBasis(int column) {
 
     std::vector<Implication> implications = std::vector<Implication>();
     std::vector< std::vector<int> > families = getComplementedFamilies(column);
 
     // now we need to run hypergraph dualization
-    //Note: the following code is temporary, while we don't have access to call the function directly
     if (families.size() != 0) {
-        writeComplementedFamilies(families);
-        //get rid of annoying output stuff
 
-        system("shd _families.dat dual.dat");
+        //Temporary
+        writeComplementedFamilies(families);
+        system("shd _09 families.dat dual.dat");
         implications = readDualToImplication(column);
+        //End of temporary
+
+        //To be implemented when subroutine implementation is complete
+        //char * buffer = runShd(families);
+        //getImplicationsFromDual(buffer, column);
+        //End    
+
     }
 
     //end of temporary
@@ -501,11 +519,21 @@ std::vector<Implication> Table::getDNonBinaryBasis(int column) {
     std::vector<Implication> implications = std::vector<Implication>();
     std::vector< std::vector<int> > families = getComplementedFamilies(column);
     // now we need to run hypergraph dualization
-    //Note: the following code is temporary, while we don't have access to call the function directly
+
     if (families.size() != 0) {
+
+        //Note: the following code is temporary, while we don't have access to call the function directly
         writeComplementedFamilies(families);
-        system("shd 09 families.dat dual.dat");
+        system("shd _09 families.dat dual.dat");
         implications = readDualToImplication(column);
+        //end of temporary
+
+        /* 
+           To be implemented when subroutine implementation is complete
+           char * buffer = runShdfamilies);
+           implications = getImplicationsFromDual(buffer);
+         */
+
         for (unsigned int i = 0; i < implications.size(); i++)// removes lhs that are not << minimal
         {
             std::vector<int>cover1 = implications[i].getlhs();
@@ -553,7 +581,7 @@ std::vector<Implication> Table::getDNonBinaryBasis(int column) {
 
         }
     }
-    //end of temporary
+
     return implications;
 }
 
