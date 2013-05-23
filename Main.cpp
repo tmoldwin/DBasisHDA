@@ -172,6 +172,13 @@ void testGetFullDBasis() {
     delete m;
 }
 
+void testSubroutine(){
+    std::vector<std::vector<char> > * m = readTable("largetestcase.txt");
+    std::vector<std::vector<char> > matrix = *m;
+    Table test(matrix);
+    test.getNonBinaryBasis(1);
+}
+
 
 int main(int argc, char* argv[]) {
     
@@ -200,6 +207,7 @@ int main(int argc, char* argv[]) {
         std::cout << "\nTesting GetdBasis\n";
         testGetFullDBasis();
      */
+    //testSubroutine();
 
     std::string inputFileName = argv[1];
     if(argc == 3){ //if an output file is given
@@ -216,4 +224,5 @@ int main(int argc, char* argv[]) {
     if(argc == 3){
         fclose (stdout);
     }
+ 
 }

@@ -12,18 +12,10 @@
 
 
 
+#ifndef _shd_c_
+#define _shd_c_
+
 #include "shd.h"
-#include"alist.c"
-#include"barray.c"
-#include"vec.c"
-#include"problem.c"
-
-
-#define SHD_STRAIGHT 1
-#define SHD_DFS 2
-#define SHD_COMPLEMENT 4
-#define SHD_NO_BITMAP 16
-#define SHD_PRUNE 32
 
 void SHD_error (){
   ERROR_MES = "command explanation";
@@ -781,6 +773,6 @@ int main1 (int argc, char *argv[]){
 #endif
 /*******************************************************************************/
 
-
+#endif
 
 
