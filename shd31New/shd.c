@@ -15,6 +15,7 @@
 #ifndef _shd_c_
 #define _shd_c_
 
+<<<<<<< HEAD
 #include"alist.c"
 #include"barray.c"
 #include"vec.c"
@@ -25,6 +26,9 @@
 #define SHD_COMPLEMENT 4
 #define SHD_NO_BITMAP 16
 #define SHD_PRUNE 32
+=======
+#include "shd.h"
+>>>>>>> 17bec5c2f48444669d0885e5639317175c32e268
 
 void SHD_error (){
   ERROR_MES = "command explanation";
