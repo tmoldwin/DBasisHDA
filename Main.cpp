@@ -2,7 +2,6 @@
 #include <string>
 #include <fstream>
 #include <vector>
-#include <iostream>
 #include <cstdlib>
 #include "Table.h"
 #include "Implication.h"

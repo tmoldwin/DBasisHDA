@@ -12,12 +12,13 @@
 
 
 
-#include "shd.h"
+#ifndef _shd_c_
+#define _shd_c_
+
 #include"alist.c"
 #include"barray.c"
 #include"vec.c"
 #include"problem.c"
-
 
 #define SHD_STRAIGHT 1
 #define SHD_DFS 2
@@ -775,12 +776,12 @@ if ( ERROR_MES ) goto END;
 /*******************************************************************************/
 #ifndef _NO_MAIN_
 #define _NO_MAIN_
-int main1 (int argc, char *argv[]){
+int main (int argc, char *argv[]){
   return (SHD_main (argc, argv));
 }
 #endif
 /*******************************************************************************/
 
-
+#endif
 
 

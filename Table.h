@@ -12,7 +12,6 @@
 #include <sstream>
 #include <vector>
 #include <map>
-#include<iostream>
 #include <cstdlib>
 #include "shd31New/shd.h"
 #include "Implication.h"
