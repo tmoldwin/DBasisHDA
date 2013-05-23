@@ -491,7 +491,7 @@ std::vector<Implication> Table::getNonBinaryBasis(int column) {
 
         //Temporary
         writeComplementedFamilies(families);
-        system("shd _families.dat dual.dat");
+        system("shd _09 families.dat dual.dat");
         implications = readDualToImplication(column);
         //End of temporary
 
@@ -524,7 +524,7 @@ std::vector<Implication> Table::getDNonBinaryBasis(int column) {
 
         //Note: the following code is temporary, while we don't have access to call the function directly
         writeComplementedFamilies(families);
-        system("shd 09 families.dat dual.dat");
+        system("shd _09 families.dat dual.dat");
         implications = readDualToImplication(column);
         //end of temporary
 
