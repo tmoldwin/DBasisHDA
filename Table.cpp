@@ -13,8 +13,6 @@ void Table::reduceTable() {
     for (int i = 0; i < matrix[0].size(); i++) {
         reducedToOriginal.push_back(i);
     }
-
-
     // following loop removes columns with all ones
     for (int i = 0; i < matrix[0].size(); i++) {
         for (int j = 0; j < matrix.size(); j++) {
@@ -38,12 +36,13 @@ void Table::reduceTable() {
     for (int i = 0; i < matrix[0].size() - 1; i++) {
         for (int j = i + 1; j < matrix[0].size(); j++) {
             if (compareColumns(i, j) == 0) {
+                
                 for (int k = 0; k < matrix.size(); k++) {
                     matrix[k].erase(matrix[k].begin() + j);
                 }
                 equivalentColumns[reducedToOriginal[j]] = std::vector<int>(1, reducedToOriginal[i]);
                 for (int l = j; l < matrix[0].size(); l++) {
-                    reducedToOriginal[l]++;
+                    reducedToOriginal[l]=reducedToOriginal[l+1];
                 }
                 reducedToOriginal.pop_back();
                 j--;
@@ -89,7 +88,7 @@ void Table::reduceTable() {
                 }
             }
             for (int l = i; l < matrix[0].size(); l++) {
-                reducedToOriginal[l]++;
+                reducedToOriginal[l]=reducedToOriginal[l+1];
             }
             reducedToOriginal.pop_back();
             i--;
@@ -524,7 +523,7 @@ std::vector<Implication> Table::getDNonBinaryBasis(int column) {
 
         //Note: the following code is temporary, while we don't have access to call the function directly
         writeComplementedFamilies(families);
-        system("shd _09 families.dat dual.dat");
+        system("./shd _09 families.dat dual.dat");
         implications = readDualToImplication(column);
         //end of temporary
 
