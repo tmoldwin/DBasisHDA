@@ -611,7 +611,7 @@ std::vector<Implication> Table::getBinaryBasis(int column) {
             for (int j=0; j<matrix.size(); j++) //finding support of lhs
             {
                 if (matrix[j][i]=='1') {
-                  //  sup++;
+                    sup++;
                 }
             }
             implicationSupport.push_back(sup);
