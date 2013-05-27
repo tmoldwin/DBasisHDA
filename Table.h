@@ -39,6 +39,7 @@ private:
     std::map<int, std::vector<int> > equivalentColumns;
     std::vector<std::vector<int> > blacklistedHittingSets;//lhss with too small supports
     int minSup;//user parameter for minimal support for lhs of implications
+    std::vector<int> implicationSupport;//gives the magnitude of the support for the ith implication
     int compareColumns(int column1, int column2); //more ones is smaller column; column numbering starts from 0;Returns 1 if column1 is greater, -1 if column2  is greater, 0 if equal, -2 if incomparable
     int compareRows(int row1, int row2); // more ones is larger row; row numbering starts from 0
     void reduceTable();

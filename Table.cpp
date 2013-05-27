@@ -95,17 +95,17 @@ void Table::reduceTable() {
         }
 
     }
-    std::cout << "Equivalent columns for reduced table in original table starting from 0\n";
+    std::cout << "Equivalent columns for reduced table in original table starting from 1\n";
     for (int i = 0; i < reducedToOriginal.size(); i++) {
         std::cout << reducedToOriginal[i];
     }
     std::cout << '\n';
-    std::cout << " Equivalent columns in original table starting from 0, blank means null set ";
+    std::cout << " Equivalent columns in original table starting from 1, blank means null set ";
     std::cout << '\n';
     for (std::map<int, std::vector<int> >::iterator it = equivalentColumns.begin(); it != equivalentColumns.end(); ++it) {
-        std::cout << it->first << "<=> ";
+        std::cout << it->first +1<< "<=> ";
         for (int i = 0; i < it->second.size(); i++) {
-            std::cout << it->second[i] << " ";
+            std::cout << it->second[i]+1 << " ";
         }
         std::cout << '\n';
     }
@@ -411,20 +411,22 @@ std::vector<Implication> Table::readDualToImplication(int column) {
                         sup++;
                     }
                 }
-                if (sup >= minSup) {
-                    std::vector<int> rhs = std::vector<int>();
-                    rhs.push_back(column);
-                    Implication implication = Implication(hittingSet, rhs);
-                    implications.push_back(implication);
-                    break;
-                }
-                if (i == matrix.size() - 1) {
+
+                if (i == matrix.size() - 1&&sup<minSup) {
                     blacklistedHittingSets.push_back(hittingSet);
                     for (unsigned int k = 0; k < hittingSet.size(); k++) {
                         std::cout << reducedToOriginal[hittingSet[k]] + 1 << " "; //in original table starting from zero
                     }
                     std::cout << "too small support = " << sup << "\n";
                 }
+            }
+            if (sup >= minSup) {
+                
+                std::vector<int> rhs = std::vector<int>();
+                rhs.push_back(column);
+                implicationSupport.push_back(sup);
+                Implication implication = Implication(hittingSet, rhs);
+                implications.push_back(implication);
             }
         }
 
@@ -571,6 +573,7 @@ std::vector<Implication> Table::getDNonBinaryBasis(int column) {
                         }
                         std::cout << "for column " << reducedToOriginal[column] + 1 << "\n";
                         implications.erase(implications.begin() + i);
+                        implicationSupport.erase(implicationSupport.begin() + i);
                         i--;
                         break;
                     }
@@ -604,6 +607,14 @@ std::vector<Implication> Table::getBinaryBasis(int column) {
             rhs.push_back(column);
             std::vector<int> lhs = std::vector<int>();
             lhs.push_back(i);
+            int sup=0;
+            for (int j=0; j<matrix.size(); j++) //finding support of lhs
+            {
+                if (matrix[j][i]=='1') {
+                  //  sup++;
+                }
+            }
+            implicationSupport.push_back(sup);
             Implication implication = Implication(lhs, rhs);
             implications.push_back(implication);
         }
@@ -647,6 +658,7 @@ void Table::prettyprintImplications(std::vector<Implication> implications) {
         for (unsigned int j = 0; j < rhs.size(); j++) {
             std::cout << reducedToOriginal[rhs[j]] + 1 << " ";
         }
+        std::cout<<"; support = "<<implicationSupport[i];
         std::cout << "\n";
     }
 }
