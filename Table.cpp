@@ -359,8 +359,8 @@ std::vector< std::vector<int> > Table::getComplementedFamilies(int column) {
     return families;
 }
 
+/*
 //Writes the complemented families for a particular column to a table to a file, to be read by the HDA program)
-
 void Table::writeComplementedFamilies(std::vector< std::vector<int> > families) {
     std::ofstream myfile;
     myfile.open("families.dat");
@@ -436,7 +436,7 @@ std::vector<Implication> Table::readDualToImplication(int column) {
 
     return implications;
 }
-/* 
+*/
 char * Table::runShd(std::vector< std::vector<int> > families) {
     std::vector<int> vector = std::vector<int>();
     int numFamilies = families.size();
@@ -481,7 +481,7 @@ std::vector<Implication> getImplicationsFromDual(int column, char* buffer) {
     }
     return implications;
 }
-*/
+
 std::vector<Implication> Table::getNonBinaryBasis(int column) {
 
     std::vector<Implication> implications = std::vector<Implication>();
@@ -490,15 +490,15 @@ std::vector<Implication> Table::getNonBinaryBasis(int column) {
     // now we need to run hypergraph dualization
     if (families.size() != 0) {
 
-        //Temporary
+        /*
         writeComplementedFamilies(families);
         system("shd _09 families.dat dual.dat");
         implications = readDualToImplication(column);
-        //End of temporary
-
+        */
+        
         //To be implemented when subroutine implementation is complete
-        //char * buffer = runShd(families);
-        //getImplicationsFromDual(buffer, column);
+        char * buffer = runShd(families);
+        implications = getImplicationsFromDual(buffer, column);
         //End    
 
     }
@@ -524,16 +524,16 @@ std::vector<Implication> Table::getDNonBinaryBasis(int column) {
     if (families.size() != 0) {
 
         //Note: the following code is temporary, while we don't have access to call the function directly
-        writeComplementedFamilies(families);
-        system("./shd _09 families.dat dual.dat");
-        implications = readDualToImplication(column);
+        //writeComplementedFamilies(families);
+        //system("shd _09 families.dat dual.dat");
+        //implications = readDualToImplication(column);
         //end of temporary
 
-        /* 
-           To be implemented when subroutine implementation is complete
-           char * buffer = runShdfamilies);
-           implications = getImplicationsFromDual(buffer);
-         */
+        
+           //To be implemented when subroutine implementation is complete
+           char * buffer = runShd(families);
+           implications = getImplicationsFromDual(buffer, column);
+         
 
         for (unsigned int i = 0; i < implications.size(); i++)// removes lhs that are not << minimal
         {
