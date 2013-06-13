@@ -461,10 +461,13 @@ int * Table::runShd(std::vector< std::vector<int> > families) {
     __load_from_memory_org__ = a;
     EXECSUB(SHD_main, 0, exit, "shd 0 void void", 0);
     int * buf = (int *) __write_to_memory_org__;
-    while (*buf != INTHUGE - 1) {
-        printf("Debugresult from SHD: %d\n", *buf);
-        buf++;
+/*    int i=0 ,*debug=buf;
+    while (*debug != INTHUGE - 1) {
+        printf("Debugresult from SHD: %d\n", *debug);
+        debug++;
+        i++;
     }
+    printf("This implication has returned %d entries.\n", i);*/
     delete [] a; // free memory again as we have the result
     return buf;
 }
@@ -540,6 +543,7 @@ std::vector<Implication> Table::getDNonBinaryBasis(int column) {
         int * buffer = runShd(families);
         implications = readDualToImplication( buffer, column );
 
+        std::cout << "Implication size: " << implications.size() << "\n";
         for (unsigned int i = 0; i < implications.size(); i++)// removes lhs that are not << minimal
         {
             std::vector<int>cover1 = implications[i].getlhs();
