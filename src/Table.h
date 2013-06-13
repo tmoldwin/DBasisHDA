@@ -83,13 +83,13 @@ public:
 
     std::vector<std::vector<int> >getComplementedFamilies(int column);
     
-    char* runShd(std::vector< std::vector<int> > families);
+    int* runShd(std::vector< std::vector<int> > families);
     
-    std::vector<Implication> getImplicationsFromDual(char* buffer, int column);
+    std::vector<Implication> getImplicationsFromDual( int column, int * buffer );
     
     void writeComplementedFamilies(std::vector< std::vector<int> > families);
 
-    std::vector<Implication> readDualToImplication(int column);
+    std::vector<Implication> readDualToImplication(int * buffer, int column);
 
     std::vector<Implication> getNonBinaryBasis(int column); //Gets the nonbinary basis for a particular column
 

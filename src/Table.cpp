@@ -99,7 +99,7 @@ void Table::reduceTable() {
     }
     std::cout << "Equivalent columns for reduced table in original table starting from 1\n";
     for (int i = 0; i < reducedToOriginal.size(); i++) {
-        std::cout << reducedToOriginal[i];
+        std::cout << reducedToOriginal[i] << " ";
     }
     std::cout << '\n';
     std::cout << " Equivalent columns in original table starting from 1, blank means null set ";
@@ -324,6 +324,7 @@ std::vector<int> Table::getMx(int column) {
 
 void printFamilies(std::vector<std::vector<int> > families) {
     int numRows = families.size();
+    std::cout << "Families ";
     for (int i = 0; i < numRows; i++) {
         int numColumns = families[i].size();
         for (int j = 0; j < numColumns; j++) {
@@ -379,20 +380,23 @@ void Table::writeComplementedFamilies(std::vector< std::vector<int> > families) 
     }
     myfile.close();
 }
+ */
 
-//reads the dual from the output file, turns it into a set of implications for that column
+// reads the dual from the memory buffer,
+// and turns it into a set of implications for that column
 
-std::vector<Implication> Table::readDualToImplication(int column) {
-    std::ifstream in_stream;
-    std::vector<Implication> implications = std::vector<Implication>();
-    in_stream.open("dual.dat");
-    for (std::string line; std::getline(in_stream, line);) {
+std::vector<Implication> Table::readDualToImplication(int * buffer, int column) {
+
+	std::vector<Implication> implications = std::vector<Implication>();
+
+	while( *buffer != INTHUGE - 1 ) { // until end of buffer
+
         std::vector<int> hittingSet = std::vector<int>();
-        std::stringstream lineStream(line);
-        int num;
-        while (lineStream >> num) {
-            hittingSet.push_back(num);
+	    while( *buffer != INTHUGE ) { // until end of line
+          hittingSet.push_back(*buffer);
+          buffer ++;
         }
+	    buffer ++; // skip end of line
         //following loop removes lhss with too small supports
         int sup = 0;
         bool blacklist = false;
@@ -432,14 +436,12 @@ std::vector<Implication> Table::readDualToImplication(int column) {
             }
         }
 
-
     }
-    in_stream.close();
 
-    return implications;
+	return implications;
 }
-*/
-char * Table::runShd(std::vector< std::vector<int> > families) {
+
+int * Table::runShd(std::vector< std::vector<int> > families) {
     std::vector<int> vector = std::vector<int>();
     int numFamilies = families.size();
     for (int i = 0; i < numFamilies; i++) {
@@ -448,41 +450,43 @@ char * Table::runShd(std::vector< std::vector<int> > families) {
         for (int j = 0; j < familySize; j++) {
             vector.push_back(family[j]);
         }
-        vector.push_back(INTHUGE);
+        vector.push_back(INTHUGE); // eol
     }
-    vector[vector.size() - 1] = INTHUGE - 1; //eof
-    int* a = &vector[0];
+    vector.push_back ( INTHUGE - 1 ); //eof
+    // now transform vector into memory object
+    int* a = new int[vector.size()];
+    // copy content
+    for( unsigned int i; i<vector.size(); i++)
+    	a[i] = vector[i];
     __load_from_memory_org__ = a;
     EXECSUB(SHD_main, 0, exit, "shd 0 void void", 0);
-    char * buf = __write_to_memory_org__;
+    int * buf = (int *) __write_to_memory_org__;
     while (*buf != INTHUGE - 1) {
-        printf("%d\n", *buf);
+        printf("Debugresult from SHD: %d\n", *buf);
         buf++;
     }
-    std::cout << sizeof (buf);
+    delete [] a; // free memory again as we have the result
     return buf;
 }
-
-std::vector<Implication> getImplicationsFromDual(int column, char* buffer) {
+/* obsolete
+std::vector<Implication> Table::getImplicationsFromDual(int column, int* buffer) {
     std::vector<Implication> implications = std::vector<Implication>();
     std::vector<std::vector<int> > dual = std::vector<std::vector<int> >();
-    int number;
     std::vector<int> line = std::vector<int>();
-    int i = 0;
-    while (number != INTHUGE - 1) { //While we haven't reached eof
-        if (number == INTHUGE) { //if we're at a newline demarcation
+
+    while (*buffer != INTHUGE - 1) { //While we haven't reached eof
+        if (*buffer == INTHUGE) { //if we're at a newline demarcation
             std::cout << "\n"; //for testing only
             dual.push_back(line); //store the current line in the dual
             line = std::vector<int>(); //line is a new vector
         } else { //in the middle of a line
-            line.push_back(number); //add the number to the line
-            std::cout << number; //for testing only
+            line.push_back(*buffer); //add the number to the line
+            std::cout << *buffer << " "; //for testing only
         }
-        number = buffer[i];
-        i++;
+        buffer ++;
     }
     return implications;
-}
+} */
 
 std::vector<Implication> Table::getNonBinaryBasis(int column) {
 
@@ -492,15 +496,15 @@ std::vector<Implication> Table::getNonBinaryBasis(int column) {
     // now we need to run hypergraph dualization
     if (families.size() != 0) {
 
-        /*
-        writeComplementedFamilies(families);
-        system("shd _09 families.dat dual.dat");
-        implications = readDualToImplication(column);
-        */
         
-        //To be implemented when subroutine implementation is complete: TODO
-        char * buffer = runShd(families);
-// ulno        implications = getImplicationsFromDual(buffer, column);
+        //writeComplementedFamilies(families);
+        //system("shd _09 families.dat dual.dat");
+        //implications = readDualToImplication(column);
+
+
+        //To be implemented when subroutine implementation is complete: TODO - ulno
+        int * buffer = runShd(families);
+        implications = readDualToImplication( buffer, column );
         //End    
 
     }
@@ -532,10 +536,9 @@ std::vector<Implication> Table::getDNonBinaryBasis(int column) {
         //end of temporary
 
         
-           //To be implemented when subroutine implementation is complete, TODO
-           char * buffer = runShd(families);
-// ulno           implications = getImplicationsFromDual(buffer, column);
-         
+        //To be implemented when subroutine implementation is complete, TODO - ulno
+        int * buffer = runShd(families);
+        implications = readDualToImplication( buffer, column );
 
         for (unsigned int i = 0; i < implications.size(); i++)// removes lhs that are not << minimal
         {
@@ -549,9 +552,9 @@ std::vector<Implication> Table::getDNonBinaryBasis(int column) {
                         for (unsigned int l = 0; l < cover2.size(); l++) {
 
                             if ((cover1[k] == cover2[l]) || columnComparisonTable[cover1[k]][cover2[l]] == 1) {
-                                /*    if(cover1[k]!=cover2[l]){
-                                     std::cout<<cover2[l]<<"is implied by"<<cover1[k]<<" ";
-                                     }*/
+                                //    if(cover1[k]!=cover2[l]){
+                                //     std::cout<<cover2[l]<<"is implied by"<<cover1[k]<<" ";
+                                //     }
                                 b = true;
                                 break;
                             }
@@ -636,7 +639,7 @@ std::vector<Implication> Table::getFullBinaryBasis() {
 
 void printImplications(std::vector<Implication> implications) {
     for (int i = 0; i < implications.size(); i++) {
-        std::cout << implications[i].toString() << "\n";
+        std::cout << implications[i].toString() << " printImplications \n";
     }
 }
 
