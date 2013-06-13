@@ -498,7 +498,7 @@ std::vector<Implication> Table::getNonBinaryBasis(int column) {
         implications = readDualToImplication(column);
         */
         
-        //To be implemented when subroutine implementation is complete
+        //To be implemented when subroutine implementation is complete: TODO
         char * buffer = runShd(families);
 // ulno        implications = getImplicationsFromDual(buffer, column);
         //End    
@@ -532,7 +532,7 @@ std::vector<Implication> Table::getDNonBinaryBasis(int column) {
         //end of temporary
 
         
-           //To be implemented when subroutine implementation is complete
+           //To be implemented when subroutine implementation is complete, TODO
            char * buffer = runShd(families);
 // ulno           implications = getImplicationsFromDual(buffer, column);
          
