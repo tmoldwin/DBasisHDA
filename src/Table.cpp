@@ -442,32 +442,34 @@ std::vector<Implication> Table::readDualToImplication(int * buffer, int column) 
 }
 
 int * Table::runShd(std::vector< std::vector<int> > families) {
-    std::vector<int> vector = std::vector<int>();
+    std::vector<int> v = std::vector<int>();
     int numFamilies = families.size();
     for (int i = 0; i < numFamilies; i++) {
         std::vector<int> family = families[i];
         int familySize = family.size();
         for (int j = 0; j < familySize; j++) {
-            vector.push_back(family[j]);
+        	printf("Transferring to SHD: %d\n", family[j]);
+            v.push_back(family[j]);
         }
-        vector.push_back(INTHUGE); // eol
+        printf("Transferring to SHD: %d\n", INTHUGE);
+        v.push_back(INTHUGE); // eol
     }
-    vector.push_back ( INTHUGE - 1 ); //eof
+    v.push_back ( INTHUGE - 1 ); //eof
     // now transform vector into memory object
-    int* a = new int[vector.size()];
+    int* a = new int[v.size()];
     // copy content
-    for( unsigned int i; i<vector.size(); i++)
-    	a[i] = vector[i];
+    for( unsigned int i; i<v.size(); i++)
+    	a[i] = v[i];
     __load_from_memory_org__ = a;
     EXECSUB(SHD_main, 0, exit, "shd 0 void void", 0);
     int * buf = (int *) __write_to_memory_org__;
-/*    int i=0 ,*debug=buf;
+    int i=0 ,*debug = buf;
     while (*debug != INTHUGE - 1) {
         printf("Debugresult from SHD: %d\n", *debug);
         debug++;
         i++;
     }
-    printf("This implication has returned %d entries.\n", i);*/
+    printf("This implication has returned %d entries.\n", i);
     delete [] a; // free memory again as we have the result
     return buf;
 }
