@@ -144,7 +144,7 @@ void testWriteComplementedFamilies() {
         test.writeComplementedFamilies(test.getComplementedFamilies(i));
     }
      */
-    test.writeComplementedFamilies(test.getComplementedFamilies(1));
+    // ulno test.writeComplementedFamilies(test.getComplementedFamilies(1));
     delete m;
 }
 

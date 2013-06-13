@@ -6,6 +6,8 @@
 //
 //
 
+#include "shd.h"
+
 #include "Table.h"
 
 void Table::reduceTable() {
@@ -498,7 +500,7 @@ std::vector<Implication> Table::getNonBinaryBasis(int column) {
         
         //To be implemented when subroutine implementation is complete
         char * buffer = runShd(families);
-        implications = getImplicationsFromDual(buffer, column);
+// ulno        implications = getImplicationsFromDual(buffer, column);
         //End    
 
     }
@@ -532,7 +534,7 @@ std::vector<Implication> Table::getDNonBinaryBasis(int column) {
         
            //To be implemented when subroutine implementation is complete
            char * buffer = runShd(families);
-           implications = getImplicationsFromDual(buffer, column);
+// ulno           implications = getImplicationsFromDual(buffer, column);
          
 
         for (unsigned int i = 0; i < implications.size(); i++)// removes lhs that are not << minimal
