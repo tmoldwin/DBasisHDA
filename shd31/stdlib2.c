@@ -36,7 +36,7 @@ VEC INIT_VEC = {TYPE_VEC,NULL,0,0};
 FILE_COUNT INIT_FILE_COUNT = {0,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL,0,0,NULL,NULL,0,0,NULL,NULL};
 short FILE2_POW[5] = {1, 10, 100, 1000, 10000};
 #ifdef _FILE2_LOAD_FROM_MEMORY_
-void *__load_from_memory__=NULL, *__load_from_memory_org__=NULL;
+void *__load_from_memory__=NULL, *__load_from_memory_org__=NULL, *__load_from_memory_org2__=NULL;
 char *__write_to_memory__=NULL, *__write_to_memory_org__=NULL, *__write_to_memory_next__=NULL;
 #endif
 

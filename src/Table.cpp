@@ -461,7 +461,7 @@ int * Table::runShd(std::vector< std::vector<int> > families) {
     for( unsigned int i; i<v.size(); i++)
     	a[i] = v[i];
     __load_from_memory_org__ = a;
-    EXECSUB(SHD_main, 0, exit, "shd 0 void void", 0);
+    EXECSUB(SHD_main, 0, exit, "shd _09 void void", 0);
     int * buf = (int *) __write_to_memory_org__;
     int i=0 ,*debug = buf;
     while (*debug != INTHUGE - 1) {

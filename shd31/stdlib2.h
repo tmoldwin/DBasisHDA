@@ -28,6 +28,11 @@
  #define _cplusplus_
 #endif
 
+// for visual C++  (use typeid insead of typeof)
+#ifdef _MSC_VER
+ #define typeof(a)  typeid(a).name()
+#endif
+
 #ifdef MULTI_CORE
 #include <sys/types.h>
 #include <pthread.h>
@@ -135,7 +140,7 @@
 // for loading/writing file from array (emulation)
 #ifdef _FILE2_LOAD_FROM_MEMORY_
  #define _NO_MAIN_
- extern void *__load_from_memory__, *__load_from_memory_org__;
+ extern void *__load_from_memory__, *__load_from_memory_org__, *__load_from_memory_org2__;
  extern char *__write_to_memory__, *__write_to_memory_org__, *__write_to_memory_next__;
  #define FILE2_LOAD_FROM_MEMORY_ENDTYPE int
  #ifndef FILE2_LOAD_FROM_MEMORY_END
@@ -686,7 +691,7 @@ void qsort_perm__##a (b *v, size_t siz, PERM *perm, int unit){ \
 } \
 PERM *qsort_perm_##a (b *v, size_t siz, int unit){ \
  PERM *perm; malloc2(perm, siz, EXIT0); \
- qsort_perm__##a (v, siz, perm, unit); return(perm); \
+ qsort_perm__##a (v, siz, perm, unit); return (perm); \
 } \
 size_t bin_search_##a (b *v, b u, size_t siz, int unit){ \
  size_t s=0, t; \
