@@ -33,6 +33,10 @@ void PROBLEM_init (PROBLEM *P){
   RAND_INIT;
   ERROR_MES = NULL;
 
+#ifdef _FILE2_LOAD_FROM_MEMORY_
+  __load_from_memory_org2__ = __load_from_memory__ = __load_from_memory_org__;
+#endif
+
   P->problem = P->problem2 = 0;
   P->prog = 0;
   P->prog2 = 0;
@@ -52,6 +56,7 @@ void PROBLEM_init (PROBLEM *P){
   P->gap_ub = INTHUGE;
   P->gap_lb = 0;
   P->xmax = P->ymax = P->pxmax = P->pymax = 0;
+  P->tmax = P->tmin = 0;
   P->cost = P->cost2 = 0;
   
   ITEMSET_init (&P->II);
@@ -140,42 +145,121 @@ void PROBLEM_load (PROBLEM *P){
 /******************************/
 #ifdef _trsact_h_
   if ( P->TT.fname ){ TRSACT_load (&P->TT);       if (ERROR_MES) goto ERR; }
+ #ifdef _FILE2_LOAD_FROM_MEMORY_
+   __load_from_memory_org__ = __load_from_memory__;
+ #endif
   if ( P->TT2.fname ){ TRSACT_load (&P->TT2);       if (ERROR_MES) goto ERR; }
+ #ifdef _FILE2_LOAD_FROM_MEMORY_
+   __load_from_memory_org__ = __load_from_memory__;
+ #endif
 #endif
+
 #ifdef _sgraph_h_
   if ( P->SG.fname ){ SGRAPH_load (&P->SG);    if (ERROR_MES) goto ERR; }
+ #ifdef _FILE2_LOAD_FROM_MEMORY_
+   __load_from_memory_org__ = __load_from_memory__;
+ #endif
   if ( P->SG2.fname ){ SGRAPH_load (&P->SG);    if (ERROR_MES) goto ERR; }
+ #ifdef _FILE2_LOAD_FROM_MEMORY_
+   __load_from_memory_org__ = __load_from_memory__;
+ #endif
 #endif
+
 #ifdef _agraph_h_
   if ( P->AG.fname ){ AGRAPH_load (&P->AG);    if (ERROR_MES) goto ERR;}
+ #ifdef _FILE2_LOAD_FROM_MEMORY_
+   __load_from_memory_org__ = __load_from_memory__;
+ #endif
   if ( P->AG2.fname ){ AGRAPH_load (&P->AG2);    if (ERROR_MES) goto ERR; }
+ #ifdef _FILE2_LOAD_FROM_MEMORY_
+   __load_from_memory_org__ = __load_from_memory__;
+ #endif
 #endif
+
 #ifdef _fstar_h_
   if ( P->FS.fname ){ FSTAR_load (&P->FS);    if (ERROR_MES) goto ERR; }
+ #ifdef _FILE2_LOAD_FROM_MEMORY_
+   __load_from_memory_org__ = __load_from_memory__;
+ #endif
   if ( P->FS2.fname ){ FSTAR_load (&P->FS2);     if (ERROR_MES) goto ERR; }
+ #ifdef _FILE2_LOAD_FROM_MEMORY_
+   __load_from_memory_org__ = __load_from_memory__;
+ #endif
 #endif
+
 #ifdef _vec_h_
   if ( P->MM.fname ){ MAT_load (&P->MM);   if (ERROR_MES) goto ERR; }
+ #ifdef _FILE2_LOAD_FROM_MEMORY_
+   __load_from_memory_org__ = __load_from_memory__;
+ #endif
   if ( P->MM2.fname ){ MAT_load (&P->MM2);    if (ERROR_MES) goto ERR; }
+ #ifdef _FILE2_LOAD_FROM_MEMORY_
+   __load_from_memory_org__ = __load_from_memory__;
+ #endif
   if ( P->SM.fname ){ SMAT_load (&P->SM);    if (ERROR_MES) goto ERR; }
+ #ifdef _FILE2_LOAD_FROM_MEMORY_
+   __load_from_memory_org__ = __load_from_memory__;
+ #endif
   if ( P->SM2.fname ){ SMAT_load (&P->SM2);    if (ERROR_MES) goto ERR; }
+ #ifdef _FILE2_LOAD_FROM_MEMORY_
+   __load_from_memory_org__ = __load_from_memory__;
+ #endif
   if ( P->FF.fname ){ SETFAMILY_load (&P->FF);   if (ERROR_MES) goto ERR; }
+ #ifdef _FILE2_LOAD_FROM_MEMORY_
+   __load_from_memory_org__ = __load_from_memory__;
+ #endif
   if ( P->FF2.fname ){ SETFAMILY_load (&P->FF2);   if (ERROR_MES) goto ERR; }
+ #ifdef _FILE2_LOAD_FROM_MEMORY_
+   __load_from_memory_org__ = __load_from_memory__;
+ #endif
   if ( P->FF.wfname ){ SETFAMILY_load_weight (&P->FF);   if (ERROR_MES) goto ERR; }
+ #ifdef _FILE2_LOAD_FROM_MEMORY_
+   __load_from_memory_org__ = __load_from_memory__;
+ #endif
   if ( P->FF2.wfname ){ SETFAMILY_load_weight (&P->FF2);   if (ERROR_MES) goto ERR; }
+ #ifdef _FILE2_LOAD_FROM_MEMORY_
+   __load_from_memory_org__ = __load_from_memory__;
+ #endif
   if ( P->FF.cwfname ){ SETFAMILY_load_column_weight (&P->FF);   if (ERROR_MES) goto ERR; }
+ #ifdef _FILE2_LOAD_FROM_MEMORY_
+   __load_from_memory_org__ = __load_from_memory__;
+ #endif
   if ( P->FF2.cwfname ){ SETFAMILY_load_column_weight (&P->FF2);   if (ERROR_MES) goto ERR; }
+ #ifdef _FILE2_LOAD_FROM_MEMORY_
+   __load_from_memory_org__ = __load_from_memory__;
+ #endif
   if ( P->FF.rwfname ){ SETFAMILY_load_row_weight (&P->FF);   if (ERROR_MES) goto ERR; }
+ #ifdef _FILE2_LOAD_FROM_MEMORY_
+   __load_from_memory_org__ = __load_from_memory__;
+ #endif
   if ( P->FF2.rwfname ){ SETFAMILY_load_row_weight (&P->FF2);   if (ERROR_MES) goto ERR; }
+ #ifdef _FILE2_LOAD_FROM_MEMORY_
+   __load_from_memory_org__ = __load_from_memory__;
+ #endif
 #endif
+
 #ifdef _seq_h_
   if ( P->SS.fname ){ SEQ_load (&P->SS);    if (ERROR_MES) goto ERR; }
+ #ifdef _FILE2_LOAD_FROM_MEMORY_
+   __load_from_memory_org__ = __load_from_memory__;
+ #endif
   if ( P->SS2.fname ){ SEQ_load (&P->SS2);     if (ERROR_MES) goto ERR; }
+ #ifdef _FILE2_LOAD_FROM_MEMORY_
+   __load_from_memory_org__ = __load_from_memory__;
+ #endif
 #endif
+
 #ifdef _barray_h_
   if ( P->BA.fname ){ BARRAY_load (&P->BA);    if (ERROR_MES) goto ERR; }
+ #ifdef _FILE2_LOAD_FROM_MEMORY_
+   __load_from_memory_org__ = __load_from_memory__;
+ #endif
   if ( P->BA2.fname ){ BARRAY_load (&P->BA2);    if (ERROR_MES) goto ERR; }
+ #ifdef _FILE2_LOAD_FROM_MEMORY_
+   __load_from_memory_org__ = __load_from_memory__;
+ #endif
 #endif
+
   if (P->input_fname){ f=1; print_mes (II, " input: %s", P->input_fname); }
   if (P->weight_fname){ f=1; print_mes (II, " weight: %s", P->weight_fname); }
   if (P->output_fname){ f=1; print_mes (II, " output to: %s",P->output_fname); }
@@ -273,6 +357,11 @@ void PROBLEM_end (PROBLEM *P){
   if ( print_time_flag )
    print_mes (II, "computation_time= %3f\n", ((double)(P->end_time-P->start_time))/CLOCKS_PER_SEC);
 
+#ifdef _FILE2_LOAD_FROM_MEMORY_
+  __load_from_memory_org__ = __load_from_memory_org2__;
+  __write_to_memory__ = __write_to_memory_org__;
+#endif
+
   PROBLEM_init (P);
 }
 
@@ -306,6 +395,7 @@ void PROBLEM_alloc (PROBLEM *P, QUEUE_ID siz, QUEUE_ID siz2, size_t siz3, PERM *
   if ( f&PROBLEM_VECMARK ) calloc2 (P->vecmark, siz2+2, goto ERR);
   if ( f&PROBLEM_VECARY ) calloc2 (P->vecary, siz2+2, goto ERR);
   if ( f&PROBLEM_VECCHR ) calloc2 (P->vecchr, siz2+2, goto ERR);
+printf ("%d siz\n", siz2+2);
   if ( f&PROBLEM_VECJUMP ) QUEUE_alloc (&P->vecjump, siz2+2);
   if ( f&PROBLEM_VECCAND ) QUEUE_alloc (&P->veccand, siz2+2);
   if ( f&PROBLEM_VECW ) calloc2 (P->vecw, siz2+2, goto ERR);

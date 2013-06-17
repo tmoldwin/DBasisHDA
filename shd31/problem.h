@@ -23,7 +23,8 @@
 #define PROBLEM_CLOSED 4
 #define PROBLEM_EX_MAXIMAL 8
 #define PROBLEM_EX_CLOSED 16
-#define PROBLEM_DOC 32
+#define PROBLEM_MINIMAL 32
+#define PROBLEM_DOC 64
 
 /*****  parameters for PROBLEM initialization, given to flag  *****/
 
@@ -82,6 +83,7 @@ typedef struct {
   double ratio, ratio2;  // ratio
   int num, siz, dim, len, width, height, gap_ub, gap_lb;
   int xmax, ymax, pxmax, pymax;
+  int tmax, tmin;
   QUEUE_INT clms;
   VEC_ID rows;
   WEIGHT cost, cost2;
