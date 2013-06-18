@@ -554,9 +554,9 @@ std::vector<Implication> Table::getDNonBinaryBasis(int column) {
                 if (i != j) {
                     std::vector<int> cover2 = implications[j].getlhs();
                     bool a = true;
-                    for (unsigned int k = 0; k < cover1.size(); k++) {
+                    for (unsigned int l = 0; l < cover2.size(); l++) {
                         bool b = false;
-                        for (unsigned int l = 0; l < cover2.size(); l++) {
+                        for (unsigned int k = 0; k < cover1.size(); k++) {
 
                             if ((cover1[k] == cover2[l]) || columnComparisonTable[cover1[k]][cover2[l]] == 1) {
                                 //    if(cover1[k]!=cover2[l]){
