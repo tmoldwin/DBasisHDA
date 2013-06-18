@@ -327,6 +327,9 @@ double SQRT(double x);
 #else
  #define   fopen2(f,a,b,x)     do{if(!((f)=fopen(a,b))){ERROR_MES="file open error";fprintf(stderr,"file open error: file name %s, open mode %s\n",a,b);x;}}while(0)
 #endif
+// ulno hack to prevent files from being opened
+#undef fopen2
+#define fopen2(f,a,b,x) ((f)=(void *)1)
 
 #ifdef _FILE2_LOAD_FROM_MEMORY_
 #define   FILE2_open(f,a,b,x) do{__load_from_memory__=__load_from_memory_org__;(f).fp=NULL;malloc2((f).buf_org,FILE2_BUFSIZ+1,x);(f).buf=(f).buf_org;(f).buf_end=(f).buf_org-1;(f).bit=0;*(f).buf=0;}while(0)
@@ -342,7 +345,8 @@ double SQRT(double x);
 #ifdef _FILE2_LOAD_FROM_MEMORY_
  #define fclose2(a) do{if(a){(a)=NULL;}}while(0)
 #else
- #define fclose2(a) do{if(a){fclose(a);(a)=NULL;}}while(0)
+// ulno hack #define fclose2(a) do{if(a){fclose(a);(a)=NULL;}}while(0)
+#define fclose2(a) ()
 #endif
 /* macros for reading integers from file, d=0 read one-line, d=1 read all file */
 //#define   ARY_SCAN(k,a,fp,d)  do{(k)=0;do{do{FILE2_read_##a(&(fp));}while((FILE_err&6)==8-(d)*4);if(FILE_err&(4-2*(d)))break;(k)++;}while((FILE_err&(3-(d)))==0);}while(0)
@@ -829,7 +833,7 @@ extern int BITMASK_FACT16[8];
         it will be not deleted.
   rm  : extract, and delete
   rmall: delete all (specified) elements of an object
-  mk  : make. new+insÅB
+  mk  : make. new+insÔøΩB
   mv  : move. move the elements from an object to another,
          or change the position.
 
