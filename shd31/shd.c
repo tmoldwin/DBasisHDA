@@ -36,7 +36,7 @@ t:transpose the database so that i-th transaction will be item i\n\
 [options]\n\
 -l [num]:output itemsets with size at least [num]\n\
 -u [num]:output itemsets with size at most [num]\n\
--S [num]:stop after outputting [num] solutions\n\
+-# [num]:stop after outputting [num] solutions\n\
 -, [char]:give the separator of the numbers in the output\n\
 -Q [filename]:replace the output numbers according to the permutation table given by [filename]\n\
 # the 1st letter of input-filename cannot be '-'.n\

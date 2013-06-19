@@ -111,8 +111,12 @@ void ITEMSET_alloc (ITEMSET *I, char *fname, PERM *perm, QUEUE_INT item_max, siz
   I->item_max = item_max;
   I->item_max_org = (QUEUE_INT)item_max_org;
   if ( fname ){
+#ifdef _FILE2_LOAD_FROM_MEMORY_
+    I->fp = (FILE *)1;
+#else 
     if ( strcmp (fname, "-") == 0 ) I->fp = stdout;
     else fopen2 (I->fp, fname, (I->flag&ITEMSET_APPEND)?"a":"w", goto ERR);
+#endif
   } else I->fp = 0;
   if ( I->flag&ITEMSET_ITEMFRQ )
     malloc2 (I->item_frq, item_max+2, goto ERR);
@@ -169,7 +173,9 @@ void ITEMSET_end (ITEMSET *I){
   QUEUE_end (&I->itemset);
   QUEUE_end (&I->add);
   AHEAP_end (&I->topk);
+#ifndef _FILE2_LOAD_FROM_MEMORY_
   fclose2 (I->fp);
+#endif
   mfree (I->sc, I->item_frq, I->itemflag, I->perm, I->set_weight, I->set_occ);
 
   if ( I->multi_fp )

@@ -321,38 +321,39 @@ Example)
 When the program is executed, the program prints out the #items,
 #transactions, and other features of the input database to standard
 error. After the termination of the enumeration, it outputs the total
-number of itemsets found (frequent/closed/maximal itemsets), and the 
-numbers of itemsets of each size. For example, if there are 4 frequent
-itemsets of size 1, 2 frequent itemsets of size 3, and 1 frequent itemset
+number of minimal hitting sets found, and the numbers of these hitting
+sets of each size. For example, if there are 4 minimal hitting sets of
+size 1, 2 minimal hitting sets of size 3, and 1 minimal hitting sets
 of size 3, then the output to standard output will be,
 
-9   <= total #hyperedges
-0   <= #hyperedges of size 0 
-4   <= #hyperedges of size 1
-3   <= #hyperedges of size 2
-1   <= #hyperedges of size 3
+9   <= total #minimal hitting sets
+0   <= #minimal hitting sets of size 0 
+4   <= #minimal hitting sets of size 1
+3   <= #minimal hitting sets of size 2
+1   <= #minimal hitting sets of size 3
 
-If "q" is given in the first parameter, these do not appear in the
-standard output.
+If "_" command is given in the first parameter, these do not appear in
+the standard output.
 
-If output-filename was given, then the hyperedges found are written to
-the output file. Each line of the output file is the list of vertices
-included in a hyperedge, separated by " ". For example,
+If output-filename was given, then the minimal hitting sets found are
+written to the output file. Each line of the output file is the list
+of vertices included in a minimal hitting set, separated by " ". For
+example,
 
 1 5 10 2 4
 
-which means hyperedge {1,2,4,5,10} is in the dual.
+which means minimal hitting set {1,2,4,5,10} is in the dual.
 In the output file, the vertices in each row are not sorted. If you want
 to sort it, use the script "sortout.pl". The usage is just,
 
 % sortout.pl < input-file > output-file
 
 "input-file" is the name of file to which SHD outputs, and the sorted
-output will be written in the file of the name "output-file".
-The vertices of each hyperedge will be sorted in the increasing order of
-the vertex ID's, and all the hyperedges (lines) will be also sorted, by the
-lexicographical order (considered as a string).
-(Actually, you can specify separator like sortout.pl ",").
+output will be written in the file of the name "output-file". The
+vertices of each minimal hitting set will be sorted in the increasing
+order of the vertex ID's, and all the minimal hitting sets (lines)
+will be also sorted, by the lexicographical order (considered as a
+string). (Actually, you can specify separator like sortout.pl ",").
 
 
 
@@ -360,17 +361,19 @@ lexicographical order (considered as a string).
 ####    Performance    #### 
 ###########################
 
-The performance of SHD is stable, for both computation time and memory use.
-The initialization and preprocess time of SHD is linear in the size of 
-input hypergraph. The computation time is intuitively linear in the product
-of (output hyperedges) and (number of input hyperedges).
+The performance of SHD is stable, for both computation time and memory
+use. The initialization and preprocess time of SHD is linear in the
+size of input hypergraph. The computation time is intuitively linear
+in the product of (output minimal hitting sets) and (number of input
+hyperedges) / 2^(average size of minimal hitting sets).
 
-Memory usage of SHD is very stable. It is an advantage compared to other 
-implementations. The memory usage of SHD is almost linear in the size of
-the input database. Approximately SHD uses integers at most three times
-as much as the database size, which is the sum of the sizes of each hyperedge.
-The memory usage of the other implementations increases as the increase
-of the number of hyperedges, but that of SHD does not.
+Memory usage of SHD is very stable. It is an advantage compared to
+other implementations. The memory usage of SHD is almost linear in the
+size of the input database. Approximately SHD uses integers at most
+three times as much as the database size, which is the sum of the
+sizes of each hyperedge. The memory usage of the other implementations
+increases as the increase of the number of hyperedges, but that of SHD
+does not.
 
 
 ##################################
@@ -444,7 +447,7 @@ FILE2_LOAD_FROM_MEMORY_END-1. An example is in sample.c.
 Notice that currently the system does not adapt to multi-core mode.
  
 
-\######################################################
+#######################################################
 ####    Introductions to Hypergraph Dualization    ####
 #######################################################
 

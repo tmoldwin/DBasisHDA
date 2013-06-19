@@ -35,6 +35,9 @@ void QUEUE_end (QUEUE *Q){
 }
 
 /* tranpose the matrix ; counting/transpose/memory_allocate */
+/* OQ: QUEUE to transposed matrix, c: count the column sizes if its given
+   jump: QUEUE to store ID's of non-empty columns, Q: the matrix, occ: the rows to be transposed
+   t: if occ=NULL, Q[0] to Q[t-1] will be transposed, M: maximum column ID to be transposed */
 void QUEUE_delivery(QUEUE *OQ, VEC_ID *c, QUEUE *jump, QUEUE *Q, QUEUE *occ, VEC_ID t, QUEUE_INT M){  VEC_ID i, e;
   QUEUE_INT *x;
   FLOOP(i, 0, occ? occ->t: t){
@@ -524,5 +527,6 @@ void QUEUE_print__ (QUEUE *Q){
   for ( i=Q->s ; i!=Q->t ; i++ ) printf (QUEUE_INTF" ",Q->v[i]);
   printf ("\n");
 }
+
 
 #endif
