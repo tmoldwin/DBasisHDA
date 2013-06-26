@@ -21,6 +21,9 @@
 #ifndef ____Table__
 #define ____Table__
 
+// global variable for column
+extern int Table_requested_column;
+
 class Table {
 private:
     int diffsbasisdbasis;
@@ -42,7 +45,7 @@ private:
     std::vector<int> implicationSupport;//gives the magnitude of the support for the ith implication
     int compareColumns(int column1, int column2); //more ones is smaller column; column numbering starts from 0;Returns 1 if column1 is greater, -1 if column2  is greater, 0 if equal, -2 if incomparable
     int compareRows(int row1, int row2); // more ones is larger row; row numbering starts from 0
-    void reduceTable();
+    bool reduceTable();
     void createColumnComparisonTable();
     void createRowComparisonTable();
     void createUpandDownArrows();
@@ -50,9 +53,18 @@ public:
 
     Table(std::vector<std::vector<char> > inputtable) {
         matrix = inputtable;
-        reduceTable();
+        std::cout << "Reducing table.\n";
+        if (!reduceTable())
+        {
+        	std::cerr<< "The requested column was reduced.\n";
+        	fflush(stdout); // make sure data gets out
+        	exit(EXIT_FAILURE);
+        }
+        std::cout << "Creating row comparison table.\n";
         createRowComparisonTable();
+        std::cout << "Creating column comparison table.\n";
         createColumnComparisonTable();
+        std::cout << "Creating up and down arrows.\n";
         createUpandDownArrows();
         minSup=1;
         diffsbasisdbasis=0;

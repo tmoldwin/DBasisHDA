@@ -208,10 +208,18 @@ int main(int argc, char* argv[]) {
      */
     //testSubroutine();
 
+	if(argc <=1 || argc >=5) // THis we don't understand
+	{
+		std::cerr << "Illegal number of parameters.\nCall like DBasisHDA <input> [<output> [<column>]]\n";
+	}
     std::string inputFileName = argv[1];
-    if(argc == 3){ //if an output file is given
+    if(argc >= 3){ //if an output file is given
         char* outputFileName = argv[2];
         freopen (outputFileName,"w",stdout);
+    }
+    if(argc == 4)
+    {
+    	Table_requested_column = atoi( argv[3] ) - 1;
     }
     std::vector<std::vector<char> > * m = readTable(inputFileName);
     std::vector<std::vector<char> > matrix = *m;
@@ -220,7 +228,7 @@ int main(int argc, char* argv[]) {
     test.prettyprintImplications(implications);
     delete m;
 
-    if(argc == 3){
+    if(argc >= 3){
         fclose (stdout);
     }
  

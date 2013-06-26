@@ -10,7 +10,15 @@
 
 #include "Table.h"
 
-void Table::reduceTable() {
+
+// global variable for column
+int Table_requested_column = -1; // by default no column requested
+int Table_requested_column_new = -1; // After reduction
+
+// reduce the Table and return True, if we can continue
+// if a column was requested, which got reduced, False will be returned and
+// further evaluations shoudl be omitted
+bool Table::reduceTable() {
     //initializing map from old to new table
     for (int i = 0; i < matrix[0].size(); i++) {
         reducedToOriginal.push_back(i);
@@ -99,7 +107,7 @@ void Table::reduceTable() {
     }
     std::cout << "Equivalent columns for reduced table in original table starting from 1\n";
     for (int i = 0; i < reducedToOriginal.size(); i++) {
-        std::cout << reducedToOriginal[i] << " ";
+        std::cout << reducedToOriginal[i] + 1 << " ";
     }
     std::cout << '\n';
     std::cout << " Equivalent columns in original table starting from 1, blank means null set ";
@@ -110,6 +118,23 @@ void Table::reduceTable() {
             std::cout << it->second[i]+1 << " ";
         }
         std::cout << '\n';
+    }
+    if (Table_requested_column >= 0)
+    {
+    	bool column_found = false;
+
+    	for (int i = 0; i < reducedToOriginal.size(); i++) {
+    		if (Table_requested_column == reducedToOriginal[i])
+    		{
+    			column_found = true; // We found it
+    			Table_requested_column_new = i; // save for later
+    			break;
+    		}
+    	}
+    	if (! column_found ) // We did not find it
+    	{
+    		return false; // stop here and make sure, we don't continue
+    	}
     }
     // following loop removes rows with all ones
     for (int i = 0; i < matrix.size(); i++) {
@@ -167,6 +192,7 @@ void Table::reduceTable() {
 
     }
 
+    return true; // everything was ok
 
 };
 
@@ -542,7 +568,7 @@ std::vector<Implication> Table::getDNonBinaryBasis(int column) {
         //end of temporary
 
         
-        //To be implemented when subroutine implementation is complete, TODO - ulno
+        //To be implemented when subroutine implementation is complete
         int * buffer = runShd(families);
         implications = readDualToImplication( buffer, column );
 
@@ -601,10 +627,20 @@ std::vector<Implication> Table::getDNonBinaryBasis(int column) {
 
 std::vector<Implication> Table::getDFullNonBinaryBasis() {
     std::vector<Implication> allnonbinaryImplications;
-    for (int i = 0; i < matrix[0].size(); i++) {
-        std::vector<Implication> nonbinarybasisi = getDNonBinaryBasis(i);
-        allnonbinaryImplications.insert(allnonbinaryImplications.end(), nonbinarybasisi.begin(), nonbinarybasisi.end());
+    if (Table_requested_column_new >= 0)
+    {
+    	int i = Table_requested_column_new;
+		std::vector<Implication> nonbinarybasisi = getDNonBinaryBasis(i);
+		allnonbinaryImplications.insert(allnonbinaryImplications.end(), nonbinarybasisi.begin(), nonbinarybasisi.end());
     }
+    else
+    {// No, not givem so we want all
+    	for (int i = 0; i < matrix[0].size(); i++) {
+    		std::vector<Implication> nonbinarybasisi = getDNonBinaryBasis(i);
+    		allnonbinaryImplications.insert(allnonbinaryImplications.end(), nonbinarybasisi.begin(), nonbinarybasisi.end());
+    	}
+    }
+
     std::cout << "diff s d" << diffsbasisdbasis << "\n";
     return allnonbinaryImplications;
 }
