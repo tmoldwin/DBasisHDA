@@ -446,10 +446,11 @@ std::vector<Implication> Table::readDualToImplication(int * buffer, int column) 
 
                 if (i == matrix.size() - 1&&sup<minSup) {
                     blacklistedHittingSets.push_back(hittingSet);
-                    for (unsigned int k = 0; k < hittingSet.size(); k++) {
+                    // the following can be commented out, if output takes too much time
+/*                    for (unsigned int k = 0; k < hittingSet.size(); k++) {
                         std::cout << reducedToOriginal[hittingSet[k]] + 1 << " "; //in original table starting from zero
                     }
-                    std::cout << "too small support = " << sup << "\n";
+                    std::cout << "too small support = " << sup << "\n"; */
                 }
             }
             if (sup >= minSup) {
