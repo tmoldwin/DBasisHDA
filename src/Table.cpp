@@ -6,6 +6,9 @@
 //
 //
 
+// Set this to one, if you want to see the full basis
+#define SUPPORT_LOWER_BOUND 3
+
 #include "shd.h"
 
 #include "Table.h"
@@ -697,18 +700,21 @@ Implication Table::mapImplication(Implication implication) {
 
 void Table::prettyprintImplications(std::vector<Implication> implications) {
     for (int i = 0; i < implications.size(); i++) {
-        std::vector<int> lhs = implications[i].getlhs();
-        std::cout << i << ". ";
-        for (unsigned int j = 0; j < lhs.size(); j++) {
-            std::cout << reducedToOriginal[lhs[j]] + 1 << " ";
-        }
-        std::cout << ("-> ");
-        std::vector<int> rhs = implications[i].getrhs();
-        for (unsigned int j = 0; j < rhs.size(); j++) {
-            std::cout << reducedToOriginal[rhs[j]] + 1 << " ";
-        }
-        std::cout<<"; support = "<<implicationSupport[i];
-        std::cout << "\n";
+    	if(implicationSupport[i]>=SUPPORT_LOWER_BOUND)
+    	{
+			std::vector<int> lhs = implications[i].getlhs();
+			std::cout << i << ". ";
+			for (unsigned int j = 0; j < lhs.size(); j++) {
+				std::cout << reducedToOriginal[lhs[j]] + 1 << " ";
+			}
+			std::cout << ("-> ");
+			std::vector<int> rhs = implications[i].getrhs();
+			for (unsigned int j = 0; j < rhs.size(); j++) {
+				std::cout << reducedToOriginal[rhs[j]] + 1 << " ";
+			}
+			std::cout<<"; support = "<<implicationSupport[i];
+			std::cout << "\n";
+    	}
     }
 }
 

@@ -208,7 +208,7 @@ int main(int argc, char* argv[]) {
      */
     //testSubroutine();
 
-	if(argc <=1 || argc >=5) // THis we don't understand
+	if(argc <=1 || argc >=5) // This we don't understand
 	{
 		std::cerr << "Illegal number of parameters.\nCall like DBasisHDA <input> [<output> [<column>]]\n";
 	}
