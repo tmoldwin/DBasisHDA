@@ -20,7 +20,7 @@ int Table_requested_column_new = -1; // After reduction
 
 // reduce the Table and return True, if we can continue
 // if a column was requested, which got reduced, False will be returned and
-// further evaluations shoudl be omitted
+// further evaluations should be omitted
 bool Table::reduceTable() {
     //initializing map from old to new table
     for (int i = 0; i < matrix[0].size(); i++) {
@@ -604,7 +604,7 @@ std::vector<Implication> Table::getDNonBinaryBasis(int column) {
                     }
                     if (a == true) {
                         diffsbasisdbasis++;
-                        for (unsigned int n = 0; n < cover2.size(); n++) {
+                        /*for (unsigned int n = 0; n < cover2.size(); n++) {
                             std::cout << reducedToOriginal[cover2[n]] + 1 << " ";
 
                         }
@@ -613,7 +613,7 @@ std::vector<Implication> Table::getDNonBinaryBasis(int column) {
                             std::cout << reducedToOriginal[cover1[m]] + 1 << " ";
 
                         }
-                        std::cout << "for column " << reducedToOriginal[column] + 1 << "\n";
+                        std::cout << "for column " << reducedToOriginal[column] + 1 << "\n";*/
                         implications.erase(implications.begin() + i);
                         implicationSupport.erase(implicationSupport.begin() + i);
                         i--;
@@ -700,7 +700,8 @@ Implication Table::mapImplication(Implication implication) {
 
 void Table::prettyprintImplications(std::vector<Implication> implications) {
     for (int i = 0; i < implications.size(); i++) {
-    	if(implicationSupport[i]>=SUPPORT_LOWER_BOUND)
+    	if(implicationSupport[i]>=SUPPORT_LOWER_BOUND ||
+    			implications[i].getlhs().size() == 1 ) // still print binary part
     	{
 			std::vector<int> lhs = implications[i].getlhs();
 			std::cout << i << ". ";

@@ -395,7 +395,7 @@ void PROBLEM_alloc (PROBLEM *P, QUEUE_ID siz, QUEUE_ID siz2, size_t siz3, PERM *
   if ( f&PROBLEM_VECMARK ) calloc2 (P->vecmark, siz2+2, goto ERR);
   if ( f&PROBLEM_VECARY ) calloc2 (P->vecary, siz2+2, goto ERR);
   if ( f&PROBLEM_VECCHR ) calloc2 (P->vecchr, siz2+2, goto ERR);
-printf ("%d siz\n", siz2+2);
+printf ("Producing hypergraph with a parameter siz: %d.\n", siz2+2);
   if ( f&PROBLEM_VECJUMP ) QUEUE_alloc (&P->vecjump, siz2+2);
   if ( f&PROBLEM_VECCAND ) QUEUE_alloc (&P->veccand, siz2+2);
   if ( f&PROBLEM_VECW ) calloc2 (P->vecw, siz2+2, goto ERR);
