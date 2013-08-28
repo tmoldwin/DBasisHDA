@@ -108,6 +108,7 @@ bool Table::reduceTable() {
         }
 
     }
+	timestamp_print();
     std::cout << "Equivalent columns for reduced table in original table starting from 1\n";
     for (int i = 0; i < reducedToOriginal.size(); i++) {
         std::cout << reducedToOriginal[i] + 1 << " ";
@@ -491,7 +492,10 @@ int * Table::runShd(std::vector< std::vector<int> > families) {
     for( unsigned int i; i<v.size(); i++)
     	a[i] = v[i];
     __load_from_memory_org__ = a;
-    EXECSUB(SHD_main, 0, exit, "shd _09 void void", 0);
+    timestamp_print();
+    std::cout << "Calling shd. ";
+    EXECSUB(SHD_main, 0, exit, "shd _09 void void", 0); // call shd
+    timestamp_print(); std::cout << "Returned from shd.\n";
     int * buf = (int *) __write_to_memory_org__;
     /*// debug
     int i=0 ,*debug = buf;
@@ -645,6 +649,7 @@ std::vector<Implication> Table::getDFullNonBinaryBasis() {
     	}
     }
 
+	timestamp_print();
     std::cout << "diff s d" << diffsbasisdbasis << "\n";
     return allnonbinaryImplications;
 }
@@ -686,6 +691,7 @@ std::vector<Implication> Table::getFullBinaryBasis() {
 
 void printImplications(std::vector<Implication> implications) {
     for (int i = 0; i < implications.size(); i++) {
+    	timestamp_print();
         std::cout << implications[i].toString() << " printImplications \n";
     }
 }
@@ -703,6 +709,7 @@ void Table::prettyprintImplications(std::vector<Implication> implications) {
     	if(implicationSupport[i]>=SUPPORT_LOWER_BOUND ||
     			implications[i].getlhs().size() == 1 ) // still print binary part
     	{
+        	timestamp_print();
 			std::vector<int> lhs = implications[i].getlhs();
 			std::cout << i << ". ";
 			for (unsigned int j = 0; j < lhs.size(); j++) {

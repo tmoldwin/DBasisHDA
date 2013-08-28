@@ -15,6 +15,7 @@
 #include <cstdlib>
 //#include "shd31/shd.c"
 #include "Implication.h"
+#include "timestamp.h"
 
 
 
@@ -53,6 +54,7 @@ public:
 
     Table(std::vector<std::vector<char> > inputtable) {
         matrix = inputtable;
+    	timestamp_print();
         std::cout << "Reducing table.\n";
         if (!reduceTable())
         {
@@ -60,10 +62,13 @@ public:
         	fflush(stdout); // make sure data gets out
         	exit(EXIT_FAILURE);
         }
+    	timestamp_print();
         std::cout << "Creating row comparison table.\n";
         createRowComparisonTable();
+    	timestamp_print();
         std::cout << "Creating column comparison table.\n";
         createColumnComparisonTable();
+    	timestamp_print();
         std::cout << "Creating up and down arrows.\n";
         createUpandDownArrows();
         minSup=1;

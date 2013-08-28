@@ -5,6 +5,7 @@
 #include <vector>
 #include <sstream>
 #include "Implication.h"
+#include "timestamp.h"
 
 Implication::Implication(std::vector<int>  lhs, std::vector<int>  rhs) {
 	leftHandSide = lhs;

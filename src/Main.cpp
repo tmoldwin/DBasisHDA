@@ -6,6 +6,7 @@
 #include "Table.h"
 #include "Implication.h"
 #include "SetOperations.h"
+#include "timestamp.h"
 
 //Reads the table from a file, outputs a vector<vector<char>>
 
@@ -43,6 +44,7 @@ void printMatrix(std::vector<std::vector<char> > * matrix) {
     int numRows = matrix->size();
     int numColumns = (*matrix)[0].size();
     for (int i = 0; i < numRows; i++) {
+    	timestamp_print();
         for (int j = 0; j < numColumns; j++) {
             std::cout << (*matrix)[i][j] << " ";
         }
@@ -56,6 +58,7 @@ void printMatrix(std::vector<std::vector<int> > * matrix) {
     int numRows = matrix->size();
     int numColumns = (*matrix)[0].size();
     for (int i = 0; i < numRows; i++) {
+    	timestamp_print();
         for (int j = 0; j < numColumns; j++) {
             printf("%3d", (*matrix)[i][j]);
         }
@@ -118,6 +121,7 @@ void testGetNonBinaryBasis() {
         printImplications(implications);
     }
      */
+	timestamp_print();
     std::cout << "nonbinary basis for column" << 1 << "\n";
     std::vector<Implication> implications = test.getNonBinaryBasis(1);
     printImplications(implications);
@@ -154,6 +158,7 @@ void testGetFullSBasis() {
     Table test(matrix);
     std::vector<Implication> implications = test.FindSBasis();
     printImplications(implications);
+	timestamp_print();
     std::cout << "original table\n";
     test.prettyprintImplications(implications);
     delete m;
@@ -166,6 +171,7 @@ void testGetFullDBasis() {
     std::vector<Implication> implications = test.FindDBasis();
     // std::vector<Implication> pimplications = test.getDNonBinaryBasis(6);
     printImplications(implications);
+	timestamp_print();
     std::cout << "original table\n";
     test.prettyprintImplications(implications);
     delete m;

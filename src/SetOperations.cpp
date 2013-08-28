@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <algorithm>
+#include "timestamp.h"
 
 std::vector<int> & complement(std::vector<int> & subset, std::vector<int> & superset) {
     std::vector<int> * complement = new std::vector<int>();
