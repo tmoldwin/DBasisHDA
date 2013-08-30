@@ -9,4 +9,4 @@
 #include <stdio.h>
 #include <time.h>
 
-extern "C" void timestamp_print();
+void timestamp_print();

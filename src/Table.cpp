@@ -578,9 +578,12 @@ std::vector<Implication> Table::getDNonBinaryBasis(int column) {
         
         //To be implemented when subroutine implementation is complete
         int * buffer = runShd(families);
+        timestamp_print(); std::cout << "readDualToImplication start.\n";
         implications = readDualToImplication( buffer, column );
+        timestamp_print(); std::cout << "readDualToImplication finish.\n";
 
-//        std::cout << "Implication size: " << implications.size() << "\n"; //debug
+        timestamp_print();
+        std::cout << "Implication size: " << implications.size() << " Starting reduction.\n"; //debug
         for (unsigned int i = 0; i < implications.size(); i++)// removes lhs that are not << minimal
         {
             std::vector<int>cover1 = implications[i].getlhs();
@@ -628,6 +631,7 @@ std::vector<Implication> Table::getDNonBinaryBasis(int column) {
             }
 
         }
+        timestamp_print(); std::cout << "Reduction finished.\n";
     }
 
     return implications;
@@ -642,7 +646,7 @@ std::vector<Implication> Table::getDFullNonBinaryBasis() {
 		allnonbinaryImplications.insert(allnonbinaryImplications.end(), nonbinarybasisi.begin(), nonbinarybasisi.end());
     }
     else
-    {// No, not givem so we want all
+    {// No, not given so we want all
     	for (int i = 0; i < matrix[0].size(); i++) {
     		std::vector<Implication> nonbinarybasisi = getDNonBinaryBasis(i);
     		allnonbinaryImplications.insert(allnonbinaryImplications.end(), nonbinarybasisi.begin(), nonbinarybasisi.end());
